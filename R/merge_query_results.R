@@ -8,6 +8,7 @@
 #'   condition_table, dataset_table, study_table, publication_table, task_table.
 #'
 #' @return A merged data frame with the query results from all the tables.
+#' @export
 #' @examples
 #' # Merge query results
 #' query_results <- list(

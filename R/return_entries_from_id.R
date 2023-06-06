@@ -7,6 +7,7 @@
 #' @param matches A list of matches containing connected IDs for each table.
 #'
 #' @return A list of data frames containing the retrieved entries for each table.
+#' @export
 #' @examples
 #' # Return entries from IDs
 #' conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")

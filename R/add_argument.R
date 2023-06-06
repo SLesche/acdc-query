@@ -13,6 +13,7 @@
 #' @param statement The manual argument select statement to be used. Required if `manual = TRUE`.
 #'
 #' @return The updated list with the added argument.
+#' @export
 
 add_argument <- function(list, conn, variable, operator, values, manual = FALSE, statement = NULL) {
   if (manual == FALSE) {

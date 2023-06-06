@@ -14,7 +14,7 @@
 #' @return A data frame containing the matching rows based on the specified columns.
 #'   If id is specified, it returns a data frame with only the selected column(s).
 #'   If full is TRUE, it returns the full joined data frames.
-#'
+#' @export
 #' @examples
 #' # Return matching rows based on common columns
 #' return_only_matches(data1, data2)

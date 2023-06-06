@@ -8,6 +8,7 @@
 #' @param ids The initial IDs to start the search.
 #'
 #' @return A list of connected IDs for each table.
+#' @export
 #' @examples
 #' # Return connected IDs
 #' conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")

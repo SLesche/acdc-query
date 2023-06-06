@@ -9,6 +9,7 @@
 #' @param values The values to be used in the SQL statement.
 #'
 #' @return A character string representing the valid SQL statement.
+#' @export
 #' @examples
 #' # Create a valid SQL statement
 #' my_conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")

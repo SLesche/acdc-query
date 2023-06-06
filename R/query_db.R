@@ -11,6 +11,7 @@
 #'   Possible values include "and" and "or" and a custom vector.
 #'
 #' @return The requested data from the database based on the specified arguments.
+#' @export
 #' @examples
 #' # Query the database
 #' conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")

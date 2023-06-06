@@ -8,6 +8,7 @@
 #'   If not provided, it will be obtained within the function.
 #'
 #' @return A character vector containing the names of the relevant tables.
+#' @export
 #' @examples
 #' # Find relevant tables
 #' my_conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")

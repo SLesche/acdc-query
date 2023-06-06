@@ -6,6 +6,7 @@
 #' @param table_name The name of the table.
 #'
 #' @return The generated ID column name.
+#' @export
 #' @examples
 #' # Return ID column name from table name
 #' return_id_name_from_table("publication_table")

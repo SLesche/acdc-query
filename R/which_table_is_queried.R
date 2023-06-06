@@ -7,6 +7,7 @@
 #' @param sql_argument The SQL argument to analyze.
 #'
 #' @return The table name that is being queried.
+#' @export
 #'
 #' @examples
 #' # Extract the table name from an SQL argument

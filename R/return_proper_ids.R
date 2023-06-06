@@ -10,6 +10,7 @@
 #'
 #' @return A list of proper IDs for each table based on the argument matches
 #'   and sequence.
+#' @export
 #'
 #' @examples
 #' # Return the proper IDs based on argument matches and sequence

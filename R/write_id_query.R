@@ -9,6 +9,7 @@
 #' @param id_vector A vector of IDs to match against the variable.
 #'
 #' @return The generated SQL query.
+#' @export
 #'
 #' @examples
 #' # Generate an SQL query to filter IDs in a table

@@ -8,6 +8,7 @@
 #' @param id_vector Optional. Only return entries that contain these ids
 #'
 #' @return A data frame or tibble containing the extracted IDs.
+#' @export
 #' @examples
 #' # Extract IDs from a table
 #' my_conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")

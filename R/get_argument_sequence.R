@@ -9,6 +9,7 @@
 #'   If a vector is provided, it should have the same length as the number of arguments.
 #'
 #' @return A numeric vector representing the sequence of arguments.
+#' @export
 #' @examples
 #' # Get argument sequence with "and" relation
 #' arguments <- list("arg1", "arg2", "arg3")

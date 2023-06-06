@@ -5,6 +5,7 @@
 #' @param conn The connection object or database connection string.
 #'
 #' @return A data frame containing the column names and corresponding table names.
+#' @export
 #' @examples
 #' # Get column names from tables
 #' my_conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
