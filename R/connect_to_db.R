@@ -1,5 +1,4 @@
 connect_to_db <- function(path_to_db){
-  # TODO: Write this function
-  # connects
-  # return(conn)
+  conn = DBI::dbConnect(RSQLite::SQLite(), path_to_db)
+  return(conn)
 }
