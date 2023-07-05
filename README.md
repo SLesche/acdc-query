@@ -1,6 +1,6 @@
 # inhibitiondb - Interaction with the Amsterdam Inhibitiontasks Database
 ## Installation
-You can install this package via `devtools::install_github("SLesche/inhibitiondb"). You may need to update imported packages.
+You can install this package via `devtools::install_github("SLesche/inhibitiondb")`. You may need to update imported packages.
 
 ## Dependencies
 This package is designed for use in R 4.2.2. Certain functions may break in different R versions. It heavily relies on the packages DBI, RSQLite, dplyr, stringr
