@@ -15,12 +15,17 @@
 #' # Generate an SQL query to filter IDs in a table
 #' write_id_query("my_table", "id_column", c(1, 2, 3))
 #'
-write_id_query <- function(table_name, variable_name, id_vector) {
+write_id_query <- function(table_name, variable_name, id_vector, target_vars = NULL) {
+  if (is.null(target_vars)){
+    selected_vars = " * "
+  } else {
+    selected_vars = paste(target_vars, collapse = ", ")
+  }
   # Convert the ID vector to a comma-separated string
   id_str = paste0(id_vector, collapse = ",")
 
   # Construct the SQL query
-  sql_query = sprintf("SELECT * FROM %s WHERE %s IN (%s)", table_name, variable_name, id_str)
+  sql_query = sprintf("SELECT %s FROM %s WHERE %s IN (%s)", selected_vars, table_name, variable_name, id_str)
 
   # Return the results
   return(sql_query)

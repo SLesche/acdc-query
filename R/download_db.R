@@ -14,7 +14,7 @@
 download_db <- function(local_path){
   # TODO: Have this updated
   # TODO: Return a "last updated" file somewhere.
-  db_url = "https://github.com/jstbcs/inhibitiontasks/raw/inhibitiontaks_db2023/initial_db.db"
+  db_url = "https://raw.githubusercontent.com/jstbcs/inhibitiontasks/inhibitiontaks_db2023/initial_db.db"
   utils::download.file(
     url = db_url,
     destfile = local_path,

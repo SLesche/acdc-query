@@ -11,6 +11,10 @@
 #' # Return ID column name from table name
 #' return_id_name_from_table("publication_table")
 return_id_name_from_table <- function(table_name){
-  name = stringr::str_replace(table_name, "table$", "id")
+  name = c()
+  for (i in seq_along(table_name)){
+    name[i] = stringr::str_replace(table_name[i], "table$", "id")
+  }
+
   return(name)
 }

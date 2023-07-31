@@ -4,7 +4,7 @@
 \alias{write_id_query}
 \title{Generate SQL query for filtering IDs in a table}
 \usage{
-write_id_query(table_name, variable_name, id_vector)
+write_id_query(table_name, variable_name, id_vector, target_vars = NULL)
 }
 \arguments{
 \item{table_name}{The name of the table to query.}
