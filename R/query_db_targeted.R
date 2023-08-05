@@ -12,6 +12,10 @@ query_db_targeted <- function(conn, arguments, target_vars = NULL, argument_rela
   if (full_db == FALSE){
     table_fields = DBI::dbListFields(conn, target_table)
     target_vars = target_vars[target_vars %in% table_fields]
+    if (length(target_vars) == 0){
+      warning("None of the variables you specified are present in the target table. Returning all variables from the target table.")
+      target_vars = NULL
+    }
   }
 
   argument_matches = vector(mode = "list", length = length(arguments))
