@@ -4,14 +4,6 @@ add_join_paths_to_query <- function(conn, argument, join_path_list, requested_va
   starting_table = stringr::str_extract(base_argument, "[a-z]+_table")
   filter_statement = stringr::str_extract(base_argument, "WHERE .*$")
 
-  if (is.null(requested_vars)){
-    selected_vars = " * "
-  } else {
-    selected_vars = paste(requested_vars, collapse = ", ")
-  }
-  sql_base_query = paste0(
-    "SELECT ", selected_vars, " FROM ", starting_table, " AS tab"
-  )
   starting_table_id = c()
 
   for (i in seq_along(join_path_list)){
@@ -23,10 +15,32 @@ add_join_paths_to_query <- function(conn, argument, join_path_list, requested_va
   }
 
   path_dataframe = join_path_list[[starting_table_id]]$path[-1, ]
-  sql_query = sql_base_query
 
   # Figure out in which join step which id variable is added
   introduction_table = discover_id_introduction_steps(conn, join_path_list[[starting_table_id]]$path)
+
+
+  # if you want to select id vars from different tables, need to add the join-prefixes
+  if (any(stringr::str_detect(requested_vars, "id$"))){
+    for (i_var in seq_along(requested_vars)){
+      if (stringr::str_detect(requested_vars[i_var], "_id$")){
+        join_prefix = introduction_table[which(introduction_table$newly_discovered_ids == requested_vars[i_var]), "join_table"]
+        requested_vars[i_var] = paste0(join_prefix, ".", requested_vars[i_var])
+      }
+    }
+  }
+
+  if (is.null(requested_vars)){
+    selected_vars = " * "
+  } else {
+    selected_vars = paste(requested_vars, collapse = ", ")
+  }
+
+  sql_base_query = paste0(
+    "SELECT ", selected_vars, " FROM ", starting_table, " AS tab"
+  )
+  sql_query = sql_base_query
+
 
   for (i in 1:nrow(path_dataframe)){
     current_table_to_join = path_dataframe$table_to_join[i]

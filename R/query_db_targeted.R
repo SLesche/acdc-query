@@ -1,5 +1,5 @@
 #' @export
-query_db_targeted <- function(conn, arguments, argument_relation = "and", target_table = "observation_table", target_vars = NULL, full_db = FALSE){
+query_db_targeted <- function(conn, arguments, target_vars = NULL, argument_relation = "and", target_table = "observation_table", full_db = TRUE){
   # copy some stuff off the query db function
   # but instead of return_connected_ids, use convert_query_path_to_sql in conjunction with compute_fastest_way_to_table
 
