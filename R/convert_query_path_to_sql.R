@@ -1,3 +1,17 @@
+#' Convert Query Path to SQL
+#'
+#' This function converts a table-specific filtering argument specified in 'argument'
+#' to a more general SQL query that returns entries from the target table that was
+#' used to generate the path list. It uses the query to determine at which table the argument
+#' is set and then constructs a SQL query by utilizing the table pathway to the target table.
+#'
+#' @param argument The table-specific filtering argument.
+#' @param path_list A list representing the join path. Each element of the list should be a data frame
+#'   describing a step in the join path with columns: "waypoint_tables", "walk_approaches", and "target_table".
+#' @param requested_vars A character vector specifying the variables to be selected from the final query result.
+#'   If \code{NULL}, all variables are selected.
+#'
+#' @return A SQL query string that represents the desired filtering and joins on the target table.
 #' @export
 convert_query_path_to_sql <- function(argument, path_list, requested_vars = NULL){
   # This function aims to convert a table-specific filtering argument specified

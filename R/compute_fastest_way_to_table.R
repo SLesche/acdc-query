@@ -1,3 +1,14 @@
+#' Compute Fastest Way to Table
+#'
+#' This function computes the fastest way to reach a target table from given input table(s) in a database using a combination
+#' of forward and backward joins. It returns a list of join paths along with waypoint tables and walk approaches (forward or backward)
+#' that enable efficient traversal from the input table(s) to the target table.
+#'
+#' @param conn The connection object or database connection string.
+#' @param input_table The input table(s) from which the traversal begins. If \code{NULL}, all tables are considered as inputs.
+#' @param target_table The target table that you want to reach through joins.
+#'
+#' @return A list of join paths with waypoint tables and walk approaches.
 #' @export
 compute_fastest_way_to_table <- function(conn, input_table = NULL, target_table = "observation_table"){
   all_tables = DBI::dbListTables(conn)

@@ -1,3 +1,15 @@
+#' Query Database Targeted
+#'
+#' This function performs targeted queries on a database using specified filtering arguments and returns the query results.
+#'
+#' @param conn The connection object or database connection string.
+#' @param arguments A list of filtering arguments for the query.
+#' @param target_vars A character vector specifying the variables to be included in the query results.
+#' @param argument_relation A character string specifying the relation between filtering arguments ("and" or "or").
+#' @param target_table The target table in the database for querying.
+#' @param full_db A logical value indicating whether to return the entire database. Only works when the target table is "observation_table".
+#'
+#' @return The query results as a data frame.
 #' @export
 query_db_targeted <- function(conn, arguments, target_vars = NULL, argument_relation = "and", target_table = "observation_table", full_db = TRUE){
   # copy some stuff off the query db function

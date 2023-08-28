@@ -1,4 +1,19 @@
+#' Add Join Paths to Query
+#'
+#' This function generates a SQL query based on a specified connection, argument, and join path list.
+#' It constructs a query that performs joins on multiple tables according to the provided join path,
+#' incorporating requested variables and filter conditions as needed.
+#'
+#' @param conn The connection object or database connection string.
+#' @param argument The base argument that will be used to build the query.
+#' @param join_path_list A list representing the join path. Each element of the list should be a data frame
+#'   describing a step in the join path with columns: "table_to_join", "method", and "common_var".
+#' @param requested_vars A character vector specifying the variables to be selected from the final query result.
+#'   If `NULL`, all variables are selected.
+#'
+#' @return A SQL query string that represents the joined tables and requested variables.
 #' @export
+#'
 add_join_paths_to_query <- function(conn, argument, join_path_list, requested_vars = NULL){
   base_argument = argument
   starting_table = stringr::str_extract(base_argument, "[a-z]+_table")

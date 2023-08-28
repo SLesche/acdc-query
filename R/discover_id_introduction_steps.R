@@ -1,4 +1,16 @@
+#' Discover ID Introduction Steps
+#'
+#' This function identifies the steps in a join path where new IDs are introduced, allowing you to
+#' determine at which join steps each ID variable is added to the query. It returns a data frame with
+#' information about newly discovered IDs and the corresponding join step in the path.
+#'
+#' @param conn The connection object or database connection string.
+#' @param full_path_dataframe A data frame representing the full join path, including columns: "table_to_join",
+#'   "method", and "common_var".
+#'
+#' @return A data frame with information about newly discovered IDs and the corresponding join step.
 #' @export
+#'
 discover_id_introduction_steps <- function(conn, full_path_dataframe){
   column_names = get_column_names(conn)
   column_names = column_names[which(stringr::str_detect(column_names$column, "id")), ]

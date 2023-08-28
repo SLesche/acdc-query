@@ -1,3 +1,12 @@
+#' Precompute Table Join Paths
+#'
+#' This function precomputes join paths for all tables in a given database using a combination of forward and backward joins.
+#' It generates a list of data frames representing the join paths for each table, including information about tables to join,
+#' walk approaches (forward or backward), and common variables used for joining.
+#'
+#' @param conn The connection object or database connection string.
+#'
+#' @return A list of join paths for each table in the database.
 #' @export
 precompute_table_join_paths <- function(conn){
   all_tables = DBI::dbListTables(conn)

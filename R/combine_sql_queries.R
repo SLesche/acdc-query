@@ -1,3 +1,19 @@
+#' Combine SQL Queries
+#'
+#' This function combines multiple SQL queries into a single query using logical OR and AND operations.
+#' It takes a list of SQL query arguments, an argument sequence indicating the order of arguments,
+#' and a path list for query conversion. The queries are combined using OR operations within each group and
+#' AND operations between different groups of queries.
+#'
+#' @param arguments A list of SQL query arguments.
+#' @param argument_sequence A numeric vector indicating the order of query arguments. Each number corresponds
+#'   to the index of the query argument in the \code{arguments} list.
+#' @param path_list A list representing the join path. Each element of the list should be a data frame
+#'   describing a step in the join path with columns: "table_to_join", "method", and "common_var".
+#' @param requested_vars A character vector specifying the variables to be selected from the final query result.
+#'   If \code{NULL}, all variables are selected.
+#'
+#' @return A combined SQL query string that integrates the specified queries using logical OR and AND operations.
 #' @export
 combine_sql_queries <- function(arguments, argument_sequence, path_list, requested_vars = NULL){
   sql_queries = vector(mode = "list", length = length(arguments))
