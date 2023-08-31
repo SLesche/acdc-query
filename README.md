@@ -114,7 +114,7 @@ Querying makes use of the function `compute_fastest_way_to_table()` which discov
 
 The function `combine_sql_queries()` handles multiple arguments and combines them based on `argument_relation`, which indicated which arguments should be combined with an AND / OR operator. Applied to the argument list created in the example above, with only AND operators being used and the target variables being `c("rt", "accuracy")` the output looks as follows: 
 
-´´´{R}
+```{r}
 combine_sql_queries(
   arugments = arguments, 
   argument_sequence = get_argument_sequence(arguments, argument_relation), 
