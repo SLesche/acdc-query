@@ -108,6 +108,11 @@ arguments <- list() %>%
 
 The function uses this input to construct an SQL query that corresponds to the filter condition and selects the primary key of the table the filter variable is located in. In the above example, `arguments` is a list of 2 elements. The first being the character string "SELECT dataset_id FROM dataset_table WHERE n_participants > 200" and the second the string "SELECT task_id FROM task_table WHERE task_name = 'stroop' OR task_name = 'flanker'".
 
+### Argument Relations
+When using multiple different arguments to filter, you may specify the operators used to combine these arguments. This can be done via the `argument_relation` argument in the `query_db()` function. This argument takes either the strings "and" or "or" or a numerical vector with length equal to the number of arguments specified. "and" or "or" result in all arguments being connected via this operator, with "and" being the default option. Passing a numerical vector allows more complicated logical combinations of filter arguments. Each entry of the vector should correspond to a filter argument. Arguments corresponding to the same number in the vector are combined via an "OR" operator. Arguments corresponding to different numbers are combined via an "AND" operator.
+
+If you specify 4 arguments A, B, C, D and want to filter the database such that it meets the conditions A & B & (C | D), the corresponding argument_relation should be `argument_relation = c(1, 2, 3, 3)`.
+
 ### Forward and Backward Connections
 This database contains multiple tables each connected via primary and foreign keys. A _forward connection_ in our terminology is any table whose primary key is listed as a foreign key in the current table. The observation table, for example, has forward connections to the dataset, between, within and condition tables. A _backward connection_ represents the opposite path. The dataset table has a backward connection to the observation table. These two means of connections between tables are relevant when filtering and joining tables.
 
