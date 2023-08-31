@@ -103,9 +103,27 @@ arguments <- list() %>%
     operator = "equal",
     values = c("stroop", "flanker")
   )
+
 ```
 
+The function uses this input to construct an SQL query that corresponds to the filter condition and selects the primary key of the table the filter variable is located in. In the above example, `arguments` is a list of 2 elements. The first being the character string "SELECT dataset_id FROM dataset_table WHERE n_participants > 200" and the second the string "SELECT task_id FROM task_table WHERE task_name = 'stroop' OR task_name = 'flanker'".
+
 ### Filter Paths
+Querying makes use of the function `compute_fastest_way_to_table()` which discovers the fastest way from a given input table to a specified target table, while avoiding connections through the observation table. If the user filters based on a variable in the _study table_, for example. The fastest way towards the observation table starting from the task-table, as in the second argument in the example above is through the dataset-table. The function `convert_query_path_to_sql()` takes the filter-argument and the list containing path info returned by `compute_fastest_way_to_table()` and extends the SQL query to now select from the observation table:
+> "SELECT * FROM observation_table AS tab WHERE (tab.dataset_id IN (SELECT dataset_id FROM dataset_table WHERE task_id IN (SELECT task_id FROM task_table WHERE task_id IN (SELECT task_id FROM task_table WHERE task_name = 'stroop' OR task_name = 'flanker'))))"
+
+The function `combine_sql_queries()` handles multiple arguments and combines them based on `argument_relation`, which indicated which arguments should be combined with an AND / OR operator. Applied to the argument list created in the example above, with only AND operators being used and the target variables being `c("rt", "accuracy")` the output looks as follows: 
+
+´´´{R}
+combine_sql_queries(
+  arugments = arguments, 
+  argument_sequence = get_argument_sequence(arguments, argument_relation), 
+  path_list = compute_fastest_way_to_table(conn, target_table = "observation_table"),
+  requested_vars = c("rt", "accuarcy")
+)
+
+# "SELECT rt, accuracy FROM observation_table AS tab WHERE (tab.dataset_id IN (SELECT dataset_id FROM dataset_table WHERE dataset_id IN (SELECT dataset_id FROM dataset_table WHERE n_participants > 200))) AND (tab.dataset_id IN (SELECT dataset_id FROM dataset_table WHERE task_id IN (SELECT task_id FROM task_table WHERE task_id IN (SELECT task_id FROM task_table WHERE task_name = 'stroop' OR task_name = 'flanker'))))"
+```
 
 ### Join Paths
 

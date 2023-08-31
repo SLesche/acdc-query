@@ -12,10 +12,6 @@
 #' @return The query results as a data frame.
 #' @export
 query_db_targeted <- function(conn, arguments, target_vars = NULL, argument_relation = "and", target_table = "observation_table", full_db = TRUE){
-  # copy some stuff off the query db function
-  # but instead of return_connected_ids, use convert_query_path_to_sql in conjunction with compute_fastest_way_to_table
-
-  # Querying starts
   if (full_db == TRUE & target_table != "observation_table"){
     warning("Requesting return of full database only works with the observation_table as the target table. (This is due to poor implementation of the backward join logic)")
   }
