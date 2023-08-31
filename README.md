@@ -77,3 +77,37 @@ df <- query_db(conn, arguments) %>%
   merge_query_results()
 ```
 
+## Documentation
+### General
+Querying is accomplished by lower level functions using user input to construct an SQL-query which is then applied to the database. To query the full database and select a subset of variables to be returned, functions locate the tables in which the requested variables are present and construct an SQL query selecting those rows of the observation table that match the filter arguments in the respective tables. If multiple filter arguments are present, the variable `argument_relation` controls how these are combined. 
+
+This database consists of multiple tables, each with variables potentially used when filtering. This presents an interesting challenge, as a user should be able to filter based on any argument in any table (and even multiple arguments each located in different tables) and return the requested variables. These returned variables may themselves need to be assembled from different tables.
+
+We selected our _observation table_, consisting of trial-level data as a central point for data querying. This was done because it contains response-time and accuracy data, as well as information about the condition of the trial. All of which are variables highly likely to be requested by the user. Any given filter argument, independent of the table the filter-variable is located in, is ultimately returning entries from the observation table. Other tables are then joined onto these matches in order to return variables not present in the observation table to the user.
+
+### Filter Arguments
+The filter function requires 3 main inputs. The connection to the database `conn`, a vector fo the requested variables returned to the user `target_vars` and a list of the filter arguments `arguments`. The function `add_argument()` can be used for creating this list of filter arguments. Its objective is to provide a user-friendly way of specifying the variable and conditions used when filtering the database. Detailed information is provided in the function's source code. Users have to provide the connection to the database `conn`. This allows the function to validate that the variable is present in the database and locate the table in which it is present. Furthermore, users need to specify the variable `variable`, the operator for the condition `operator` and the value (or values) which make up the filter argument. Please find an example of filtering the database to only return entries where _the study contains more than 200 participants_ and _the study used either stroop or flanker tasks_ below.
+```{r}
+conn <- connect_to_db("inhibitiontasks.db")
+
+arguments <- list() %>% 
+  add_argument(
+    conn = conn,
+    variable = "n_participants",
+    operator = "greater",
+    values = 200
+  ) %>% 
+  add_argument(
+    conn = conn,
+    variable = "task_name",
+    operator = "equal",
+    values = c("stroop", "flanker")
+  )
+```
+
+### Filter Paths
+
+### Join Paths
+
+
+

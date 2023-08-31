@@ -4,7 +4,7 @@
 #'
 #' @param list The list to which the argument will be added.
 #' @param conn The connection object or database connection string.
-#' @param variable The variable or column name to be used in the argument.
+#' @param variable The variable name to be used in the argument.
 #' @param operator The operator to be used in the argument (e.g., "greater", "between", "equal", "less").
 #' @param values The values to be used in the argument.
 #' @param manual A logical value indicating whether the argument should be created automatically or manually.
