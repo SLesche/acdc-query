@@ -121,11 +121,20 @@ combine_sql_queries(
   path_list = compute_fastest_way_to_table(conn, target_table = "observation_table"),
   requested_vars = c("rt", "accuarcy")
 )
-
-# "SELECT rt, accuracy FROM observation_table AS tab WHERE (tab.dataset_id IN (SELECT dataset_id FROM dataset_table WHERE dataset_id IN (SELECT dataset_id FROM dataset_table WHERE n_participants > 200))) AND (tab.dataset_id IN (SELECT dataset_id FROM dataset_table WHERE task_id IN (SELECT task_id FROM task_table WHERE task_id IN (SELECT task_id FROM task_table WHERE task_name = 'stroop' OR task_name = 'flanker'))))"
 ```
+> "SELECT rt, accuracy FROM observation_table AS tab WHERE (tab.dataset_id IN (SELECT dataset_id FROM dataset_table WHERE dataset_id IN (SELECT dataset_id FROM dataset_table WHERE n_participants > 200))) AND (tab.dataset_id IN (SELECT dataset_id FROM dataset_table WHERE task_id IN (SELECT task_id FROM task_table WHERE task_id IN (SELECT task_id FROM task_table WHERE task_name = 'stroop' OR task_name = 'flanker'))))"
 
 ### Join Paths
+In order for the user to be able to select variables not present in the observation table, information from other tables must be added to the rows retained in the observation table after applying the filtering statements above. The function `add_join_paths_to_query()` handles this issue. The combined arguments returned by `combine_sql_queries()`, the connection to the database, the requested variables and a list of optimal join paths, similar to the list of optimal filter paths is requirred as inputs to the function. 
+
+**somthing about this join_path_list**
+
+**naming of the joined tables**
+
+**how this deals with duplicated column names**
+
+**example output**
+
 
 
 
