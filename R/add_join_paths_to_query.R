@@ -97,24 +97,25 @@ add_join_paths_to_query <- function(conn, argument, join_path_list, requested_va
       )
     } else {
       join_var_statement = paste0(
-        "dtout",
+        introduction_table$join_table[i], # here I want to figure out where the relevant id is introduced (by which join step)
         ".",
         current_common_var,
         " = ",
-        "tab",
+        paste0("dtjoin", i),
         ".",
         current_common_var
       )
 
       sql_query = paste0(
-        "SELECT * FROM ",
-        current_table_to_join,
-        " AS dtout ",
-        " LEFT JOIN (",
         sql_query,
-        " ",
-        filter_statement,
-        ") AS tab ",
+        " RIGHT JOIN ",
+        "(SELECT ",
+        relevant_field_names,
+        " FROM ",
+        current_table_to_join,
+        ")",
+        " AS ", paste0("dtjoin", i),
+        " ON ",
         join_var_statement
       )
     }
