@@ -12,10 +12,6 @@
 #' @return The query results as a data frame.
 #' @export
 query_db <- function(conn, arguments, target_vars = NULL, argument_relation = "and", target_table = "observation_table", full_db = TRUE){
-  if (full_db == TRUE & target_table != "observation_table"){
-    warning("Requesting return of full database only works with the observation_table as the target table. (This is due to poor implementation of the backward join logic)")
-  }
-
   # When only requesting a specific table, make sure that target vars are present in that table
   if (full_db == FALSE){
     table_fields = DBI::dbListFields(conn, target_table)
@@ -39,7 +35,7 @@ query_db <- function(conn, arguments, target_vars = NULL, argument_relation = "a
     if (grepl("_id$", target_var)){
       table = return_table_name_from_id(target_var)
     } else {
-      table = find_relevant_tables(conn, variable)
+      table = find_relevant_tables(conn, target_var)
     }
     relevant_tables = c(relevant_tables, table)
   }
@@ -60,18 +56,18 @@ query_db <- function(conn, arguments, target_vars = NULL, argument_relation = "a
       conn,
       add_join_paths_to_query(
         conn,
-        combine_sql_queries(
+        argument = combine_sql_queries(
           arguments,
           argument_sequence,
           path_list,
           target_vars
         ),
-        precompute_table_join_paths(
+        join_path_list = precompute_table_join_paths(
           conn = conn,
           input_table = target_table,
           relevant_tables = relevant_tables
         ),
-        target_vars
+        requested_vars = target_vars
       )
     )
   }

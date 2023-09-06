@@ -49,5 +49,7 @@ discover_id_introduction_steps <- function(conn, full_path_dataframe){
     }
   }
 
+  discovered_ids$common_var = full_path_dataframe$common_var
+
   return(discovered_ids)
 }

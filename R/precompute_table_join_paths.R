@@ -175,8 +175,8 @@ precompute_table_join_paths <- function(conn, input_table = NULL, relevant_table
   }
 
   list_join_paths = vector(mode = "list", length = length(useable_table_info_ids))
-  for (iinfo in useable_table_info_ids){
-    list_join_paths[[iinfo]] = table_info[[iiinfo]]
+  for (iinfo in seq_along(useable_table_info_ids)){
+    list_join_paths[[iinfo]] = table_info[[useable_table_info_ids[iinfo]]]
   }
   return(list_join_paths)
 }

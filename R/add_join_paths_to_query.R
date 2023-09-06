@@ -63,9 +63,9 @@ add_join_paths_to_query <- function(conn, argument, join_path_list, requested_va
     current_common_var = path_dataframe$common_var[i]
 
     # I only want to add new id variables to the joins, not any that are in there currently
-    upcoming_important_ids = return_id_name_from_table(path_dataframe$table_to_join[i:nrow(path_dataframe)])
+    upcoming_important_ids = path_dataframe$common_var[i:nrow(path_dataframe)]
     already_introduced_ids = introduction_table[which(introduction_table$discovery_id < (i + 1)), "newly_discovered_ids"]
-    upcoming_important_ids = upcoming_important_ids[!upcoming_important_ids %in% already_introduced_ids]
+    upcoming_important_ids = upcoming_important_ids[(!upcoming_important_ids %in% already_introduced_ids) | (upcoming_important_ids %in% current_common_var)]
 
     relevant_field_names = DBI::dbListFields(conn, current_table_to_join)
     relevant_field_names = relevant_field_names[which(stringr::str_detect(relevant_field_names, "_id$", negate = TRUE) | relevant_field_names %in% upcoming_important_ids)]
@@ -74,7 +74,7 @@ add_join_paths_to_query <- function(conn, argument, join_path_list, requested_va
 
     if (current_method == "forward"){
       join_var_statement = paste0(
-        introduction_table$join_table[i + 1], # here I want to figure out where the relevant id is introduced (by which join step)
+        introduction_table$join_table[introduction_table$newly_discovered_ids == current_common_var], # here I want to figure out where the relevant id is introduced (by which join step)
         ".",
         current_common_var,
         " = ",
@@ -97,7 +97,7 @@ add_join_paths_to_query <- function(conn, argument, join_path_list, requested_va
       )
     } else {
       join_var_statement = paste0(
-        introduction_table$join_table[i], # here I want to figure out where the relevant id is introduced (by which join step)
+        introduction_table$join_table[introduction_table$newly_discovered_ids == current_common_var], # here I want to figure out where the relevant id is introduced (by which join step)
         ".",
         current_common_var,
         " = ",
