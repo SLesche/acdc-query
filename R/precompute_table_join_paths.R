@@ -5,12 +5,18 @@
 #' walk approaches (forward or backward), and common variables used for joining.
 #'
 #' @param conn The connection object or database connection string.
+#' @param relevant_tables A vector of tables that are relevant to the query.
 #'
 #' @return A list of join paths for each table in the database.
 #' @export
-precompute_table_join_paths <- function(conn){
+precompute_table_join_paths <- function(conn, input_table = NULL, relevant_tables = NULL){
   all_tables = DBI::dbListTables(conn)
+
   tables = all_tables[stringr::str_detect(all_tables, "sqlite", negate = TRUE)]
+
+  if (is.null(relevant_tables)){
+    relevant_tables = tables
+  }
 
   n_tables = length(tables)
 
@@ -52,19 +58,27 @@ precompute_table_join_paths <- function(conn){
     table_info[[i]]$backward$ids = return_id_name_from_table(table_info[[i]]$backward$table)
   }
 
+  input_table_index = c()
   for (i in seq_along(table_info)){
-    table_info[[i]]$path = data.frame(
-      position = 1:n_tables,
-      table_to_join = "replace",
-      method = "replace",
-      common_var = "replace"
-    )
+    if (!is.null(input_table)){
+      if (table_info[[i]]$table == input_table){
+        input_table_index = i
+      }
+    }
+  }
 
+  if (is.null(input_table)){
+    indexes_to_compute = seq_along(table_info)
+  } else {
+    indexes_to_compute = input_table_index
+  }
+
+  for (i in indexes_to_compute){
     explored_tables = c(table_info[[i]]$table)
     methods = c("base")
     common_var = c("base")
 
-    while (!all(tables %in% explored_tables)){
+    while (!all(relevant_tables %in% explored_tables)){
       # For all explored tables, find the one with the most forward links to
       # non-explored tables. If all are zero, then do a backward step.
 
@@ -101,6 +115,9 @@ precompute_table_join_paths <- function(conn){
 
       forward_tables = table_info[[index_best_explored_table]]$forward$table
       non_explored_forward = forward_tables[!forward_tables %in% explored_tables]
+      if ((!"observation_table" %in% relevant_tables) & explored_tables[1] != "observation_table"){
+        non_explored_forward = non_explored_forward[non_explored_forward != "observation_table"]
+      }
 
       if (length(non_explored_forward) > 0){
         for (table in non_explored_forward){
@@ -124,6 +141,9 @@ precompute_table_join_paths <- function(conn){
 
           backward_tables = table_info[[index_last_explored_table]]$backward$table
           non_explored_backward = backward_tables[!backward_tables %in% explored_tables]
+          if (!"observation_table" %in% relevant_tables){
+            non_explored_backward = non_explored_backward[non_explored_backward != "observation_table"]
+          }
 
           if (length(non_explored_backward) > 0){
             backward_table = non_explored_backward[1]
@@ -137,11 +157,26 @@ precompute_table_join_paths <- function(conn){
         common_var = c(common_var, return_id_name_from_table(last_explored_table))
       }
     }
-    table_info[[i]]$path$table_to_join = explored_tables
-    table_info[[i]]$path$method = methods
-    table_info[[i]]$path$common_var = common_var
+    table_info[[i]]$path = data.frame(
+      position = 1:length(explored_tables),
+      table_to_join = explored_tables,
+      method = methods,
+      common_var = common_var
+    )
+
   }
 
-  list_join_paths = table_info
+
+  useable_table_info_ids = c()
+  if (is.null(input_table)){
+    useable_table_info_ids = seq_along(table_info)
+  } else {
+    useable_table_info_ids = input_table_index
+  }
+
+  list_join_paths = vector(mode = "list", length = length(useable_table_info_ids))
+  for (iinfo in useable_table_info_ids){
+    list_join_paths[[iinfo]] = table_info[[iiinfo]]
+  }
   return(list_join_paths)
 }

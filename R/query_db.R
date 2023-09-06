@@ -33,6 +33,18 @@ query_db <- function(conn, arguments, target_vars = NULL, argument_relation = "a
   path_list = compute_fastest_way_to_table(conn, target_table = target_table)
   target_table_id = return_id_name_from_table(target_table)
 
+  relevant_tables = c()
+  for (target_var in target_vars){
+    # if the variable is an id-name, it should be filtered in its table
+    if (grepl("_id$", target_var)){
+      table = return_table_name_from_id(target_var)
+    } else {
+      table = find_relevant_tables(conn, variable)
+    }
+    relevant_tables = c(relevant_tables, table)
+  }
+  relevant_tables = unique(relevant_tables)
+
   if (full_db == FALSE){
     data = dbGetQuery(
       conn,
@@ -54,7 +66,11 @@ query_db <- function(conn, arguments, target_vars = NULL, argument_relation = "a
           path_list,
           target_vars
         ),
-        precompute_table_join_paths(conn),
+        precompute_table_join_paths(
+          conn = conn,
+          input_table = target_table,
+          relevant_tables = relevant_tables
+        ),
         target_vars
       )
     )
