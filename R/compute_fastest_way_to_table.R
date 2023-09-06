@@ -203,7 +203,7 @@ compute_fastest_way_to_table <- function(conn, input_table = NULL, target_table 
   }
 
   list_join_paths = vector(mode = "list", length = length(useable_table_info_ids))
-  for (iinfo in seq_along(useable_table_info_ids)){
+  for (iinfo in useable_table_info_ids){
     list_join_paths[[iinfo]]$path = table_info[[useable_table_info_ids[iinfo]]]$path
     list_join_paths[[iinfo]]$table = table_info[[useable_table_info_ids[iinfo]]]$table
     list_join_paths[[iinfo]]$target_table = target_table
