@@ -41,6 +41,12 @@ query_db <- function(conn, arguments, target_vars = NULL, argument_relation = "a
   }
   relevant_tables = unique(relevant_tables)
 
+  # protection against a full db query just taking variables from one table
+  # this will break the join function because the path dataframe only has one row in that case
+  if (all(relevant_tables == target_table)){
+    full_db = FALSE
+  }
+
   if (full_db == FALSE){
     data = dbGetQuery(
       conn,

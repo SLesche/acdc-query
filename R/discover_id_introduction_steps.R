@@ -14,7 +14,7 @@
 discover_id_introduction_steps <- function(conn, full_path_dataframe){
   column_names = get_column_names(conn)
   column_names = column_names[which(stringr::str_detect(column_names$column, "id")), ]
-  possible_tables = unique(column_names$table)
+  possible_tables = unique(full_path_dataframe$table_to_join)
   possible_ids = return_id_name_from_table(possible_tables)
 
   discovered_ids = data.frame()
@@ -29,6 +29,9 @@ discover_id_introduction_steps <- function(conn, full_path_dataframe){
     } else {
       newly_discovered_ids = contained_ids
     }
+
+    # Protection against discovering ids that are not relevant
+    newly_discovered_ids = newly_discovered_ids[newly_discovered_ids %in% possible_ids]
 
     discovery_id = i
 

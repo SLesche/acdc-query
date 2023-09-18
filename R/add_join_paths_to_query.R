@@ -28,8 +28,13 @@ add_join_paths_to_query <- function(conn, argument, join_path_list, requested_va
       break
     }
   }
+  # protection against queries located entirely within a table
 
-  path_dataframe = join_path_list[[starting_table_id]]$path[-1, ]
+  path_dataframe = join_path_list[[starting_table_id]]$path
+
+  if (nrow(path_dataframe) > 1){
+    path_dataframe = path_dataframe[-1, ]
+  }
 
   # Figure out in which join step which id variable is added
   introduction_table = discover_id_introduction_steps(conn, join_path_list[[starting_table_id]]$path)
