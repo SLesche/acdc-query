@@ -9,6 +9,8 @@ precompute_table_join_paths(conn, input_table = NULL, relevant_tables = NULL)
 \arguments{
 \item{conn}{The connection object or database connection string.}
 
+\item{input_table}{The table from which the join path is computed.}
+
 \item{relevant_tables}{A vector of tables that are relevant to the query.}
 }
 \value{

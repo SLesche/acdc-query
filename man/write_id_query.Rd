@@ -12,6 +12,8 @@ write_id_query(table_name, variable_name, id_vector, target_vars = NULL)
 \item{variable_name}{The name of the variable/column to filter on.}
 
 \item{id_vector}{A vector of IDs to match against the variable.}
+
+\item{target_vars}{A vector of variables to be selected from the table based on the ids.}
 }
 \value{
 The generated SQL query.
