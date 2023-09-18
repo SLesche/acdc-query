@@ -19,7 +19,7 @@ add_argument(
 
 \item{conn}{The connection object or database connection string.}
 
-\item{variable}{The variable or column name to be used in the argument.}
+\item{variable}{The variable name to be used in the argument.}
 
 \item{operator}{The operator to be used in the argument (e.g., "greater", "between", "equal", "less").}
 

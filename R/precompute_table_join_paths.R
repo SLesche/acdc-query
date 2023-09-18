@@ -5,6 +5,7 @@
 #' walk approaches (forward or backward), and common variables used for joining.
 #'
 #' @param conn The connection object or database connection string.
+#' @param input_table The table from which the join path is computed.
 #' @param relevant_tables A vector of tables that are relevant to the query.
 #'
 #' @return A list of join paths for each table in the database.

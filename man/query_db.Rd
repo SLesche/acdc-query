@@ -2,34 +2,33 @@
 % Please edit documentation in R/query_db.R
 \name{query_db}
 \alias{query_db}
-\title{Query the database based on specified arguments}
+\title{Query Database}
 \usage{
-query_db(conn, arguments, argument_relation = "and")
+query_db(
+  conn,
+  arguments,
+  target_vars = NULL,
+  argument_relation = "and",
+  target_table = "observation_table",
+  full_db = TRUE
+)
 }
 \arguments{
-\item{conn}{A database connection object.}
+\item{conn}{The connection object or database connection string.}
 
-\item{arguments}{A list of SQL queries specifying the arguments.
-Each query should retrieve the primary keys for matching records.}
+\item{arguments}{A list of filtering arguments for the query.}
 
-\item{argument_relation}{The relation between the arguments. Defaults to "and".
-Possible values include "and" and "or" and a custom vector.}
+\item{target_vars}{A character vector specifying the variables to be included in the query results.}
+
+\item{argument_relation}{A character string specifying the relation between filtering arguments ("and" or "or").}
+
+\item{target_table}{The target table in the database for querying.}
+
+\item{full_db}{A logical value indicating whether to return the entire database. Only works when the target table is "observation_table".}
 }
 \value{
-The requested data from the database based on the specified arguments.
+The query results as a data frame.
 }
 \description{
-This function queries the database based on the provided arguments and returns the requested data.
-It matches primary keys from the initial queries and finds connected keys based on the argument sequence.
-The data is then retrieved from the database using the obtained IDs.
-}
-\examples{
-# Query the database
-conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-arguments <- list(
-  "SELECT observation_id FROM observation_table WHERE value > 10",
-  "SELECT between_id FROM between_table WHERE between_var = 'A'"
-)
-query_db(conn, arguments)
-
+This function performs targeted queries on a database using specified filtering arguments and returns the query results.
 }

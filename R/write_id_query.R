@@ -7,6 +7,7 @@
 #' @param table_name The name of the table to query.
 #' @param variable_name The name of the variable/column to filter on.
 #' @param id_vector A vector of IDs to match against the variable.
+#' @param target_vars A vector of variables to be selected from the table based on the ids.
 #'
 #' @return The generated SQL query.
 #' @export
