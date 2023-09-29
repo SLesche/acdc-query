@@ -126,14 +126,11 @@ add_join_paths_to_query <- function(conn, argument, join_path_list, requested_va
     }
   }
 
-  # if only forward joins, you need to add the filter statement
-  used_modes = unique(path_dataframe$method)
-  if (length(used_modes) == 1 & used_modes[1] == "forward"){
-    sql_query = paste0(
-      sql_query,
-      " ",
-      filter_statement
-    )
-  }
+
+  sql_query = paste0(
+    sql_query,
+    " ",
+    filter_statement
+  )
   return(sql_query)
 }
