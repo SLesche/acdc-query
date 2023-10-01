@@ -14,10 +14,9 @@
 #' @return A SQL query string that represents the joined tables and requested variables.
 #' @export
 #'
-add_join_paths_to_query <- function(conn, argument, join_path_list, requested_vars = NULL){
+add_join_paths_to_query <- function(conn, argument, filter_statements, join_path_list, argument_sequence, requested_vars = NULL){
   base_argument = argument
   starting_table = stringr::str_extract(base_argument, "[a-z]+_table")
-  filter_statement = stringr::str_extract(base_argument, "WHERE .*$")
 
   starting_table_id = c()
 
@@ -126,11 +125,11 @@ add_join_paths_to_query <- function(conn, argument, join_path_list, requested_va
     }
   }
 
-
+  combined_filter_statement = get_filter_statement(filter_statements, argument_sequence, introduction_table)
   sql_query = paste0(
     sql_query,
     " ",
-    filter_statement
+    combined_filter_statement
   )
   return(sql_query)
 }

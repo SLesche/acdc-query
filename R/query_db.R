@@ -26,17 +26,35 @@ query_db <- function(conn, arguments, target_vars = NULL, argument_relation = "a
 
   argument_sequence = get_argument_sequence(arguments, argument_relation)
 
+  filter_variables = c()
+  filter_statements = vector(mode = "list", length = length(arguments))
+
+  for (i in seq_along(arguments)){
+    filter_variables = c(
+      filter_variables,
+      stringr::str_remove(
+        stringr::str_extract_all(
+          arguments[[i]], "WHERE [a-z_A-Z]+"
+        ),
+        "WHERE "
+      )
+    )
+
+    filter_statements[[i]] = stringr::str_extract(arguments[[i]], "WHERE .*")
+  }
+
+  col_names = get_column_names(conn)
+
+  relevant_tables = c()
+  for (var in filter_variables){
+    relevant_tables = c(relevant_tables, find_relevant_tables(conn, var, col_names, TRUE))
+  }
+
   path_list = compute_fastest_way_to_table(conn, target_table = target_table)
   target_table_id = return_id_name_from_table(target_table)
 
-  relevant_tables = c()
   for (target_var in target_vars){
-    # if the variable is an id-name, it should be filtered in its table
-    if (grepl("_id$", target_var)){
-      table = return_table_name_from_id(target_var)
-    } else {
-      table = find_relevant_tables(conn, target_var)
-    }
+    table = find_relevant_tables(conn, target_var, col_names, TRUE)
     relevant_tables = c(relevant_tables, table)
   }
   relevant_tables = unique(relevant_tables)
@@ -68,11 +86,13 @@ query_db <- function(conn, arguments, target_vars = NULL, argument_relation = "a
           path_list,
           target_vars
         ),
+        filter_statements = filter_statements,
         join_path_list = precompute_table_join_paths(
           conn = conn,
           input_table = target_table,
           relevant_tables = relevant_tables
         ),
+        argument_sequence = argument_sequence,
         requested_vars = target_vars
       )
     )
