@@ -110,7 +110,7 @@ compute_fastest_way_to_table <- function(conn, input_table = NULL, target_table 
 
         if (any(connector_ids > 0)){
           connector_tables = starting_table_connectors[connector_ids]
-          if (length(connector_tables > 1)){
+          if (length(connector_tables) > 1){
             connector_tables = connector_tables[which(connector_tables != "observation_table")]
           }
 
