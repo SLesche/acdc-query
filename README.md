@@ -1,4 +1,4 @@
-# acdc-query - Query the Attenional Control Data Collection
+# acdc-query: Query the Attentional Control Data Collection
 ## Installation
 You can install this package via `devtools::install_github("SLesche/acdc-query")`. You may need to update imported packages.
 
