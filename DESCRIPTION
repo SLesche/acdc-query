@@ -1,12 +1,12 @@
-Package: inhibitiondb
-Title: What the Package Does (One Line, Title Case)
+Package: ACDCquery
+Title: Query the Attentional Control Data Collection
 Version: 0.0.0.9000
 Authors@R: 
     person("Sven", "Lesche", , "sven.lesche@stud.uni-heidelberg.de", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: Access the Amsterdam Inhibition Tasks Database.
+Description: Access ACDC.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-Imports: DBI, RSQLite, stringr, magrittr, dplyr, tidyr
+Imports: DBI, RSQLite, stringr, dplyr
