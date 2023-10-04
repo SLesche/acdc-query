@@ -50,6 +50,11 @@ query_db <- function(conn, arguments, target_vars = NULL, argument_relation = "a
     relevant_tables = c(relevant_tables, find_relevant_tables(conn, var, col_names, TRUE))
   }
 
+  # Make sure that people dont filter
+  if (("observation_table" %in% relevant_tables) & (target_table != "observation_table")){
+    warning_message = "You are attempting to filter based on variables of the observation-level data. This can be very slow. Are you sure you want to continue?"
+  }
+
   path_list = compute_fastest_way_to_table(conn, target_table = target_table)
   target_table_id = return_id_name_from_table(target_table)
 
