@@ -72,12 +72,15 @@ add_join_paths_to_query <- function(conn, argument, filter_statements, join_path
     upcoming_important_ids = upcoming_important_ids[(!upcoming_important_ids %in% already_introduced_ids) | (upcoming_important_ids %in% current_common_var)]
 
     relevant_field_names = DBI::dbListFields(conn, current_table_to_join)
-    relevant_field_names = relevant_field_names[which(stringr::str_detect(relevant_field_names, "_id$", negate = TRUE) | relevant_field_names %in% upcoming_important_ids)]
-    relevant_field_names = unique(c(relevant_field_names, return_id_name_from_table(current_table_to_join)))
+    # relevant_field_names = relevant_field_names[which(stringr::str_detect(relevant_field_names, "_id$", negate = TRUE) | relevant_field_names %in% upcoming_important_ids)]
+    # relevant_field_names = unique(c(relevant_field_names, return_id_name_from_table(current_table_to_join)))
     relevant_field_names = paste(relevant_field_names, collapse = ", ")
 
-    if (current_method == "forward"){
-      join_var_statement = paste0(
+    common_vars = strsplit(path_dataframe$all_common_vars[i], ",")[[1]]
+    join_var_statement = character()
+    for (icommon in seq_along(common_vars)){
+      current_common_var = common_vars[icommon]
+      new_join_statement = paste0(
         introduction_table$join_table[introduction_table$newly_discovered_ids == current_common_var], # here I want to figure out where the relevant id is introduced (by which join step)
         ".",
         current_common_var,
@@ -86,7 +89,18 @@ add_join_paths_to_query <- function(conn, argument, filter_statements, join_path
         ".",
         current_common_var
       )
+      if (icommon == 1){
+        join_var_statement = new_join_statement
+      } else {
+        join_var_statement = paste0(
+          join_var_statement,
+          " AND ",
+          new_join_statement
+        )
+      }
+    }
 
+    if (current_method == "forward"){
       sql_query = paste0(
         sql_query,
         " LEFT JOIN ",
@@ -100,16 +114,6 @@ add_join_paths_to_query <- function(conn, argument, filter_statements, join_path
         join_var_statement
       )
     } else {
-      join_var_statement = paste0(
-        introduction_table$join_table[introduction_table$newly_discovered_ids == current_common_var], # here I want to figure out where the relevant id is introduced (by which join step)
-        ".",
-        current_common_var,
-        " = ",
-        paste0("dtjoin", i),
-        ".",
-        current_common_var
-      )
-
       sql_query = paste0(
         sql_query,
         " RIGHT JOIN ",

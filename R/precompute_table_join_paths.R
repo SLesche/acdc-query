@@ -179,5 +179,43 @@ precompute_table_join_paths <- function(conn, input_table = NULL, relevant_table
   for (iinfo in seq_along(useable_table_info_ids)){
     list_join_paths[[iinfo]] = table_info[[useable_table_info_ids[iinfo]]]
   }
+
+  # Find out all common vars that can be used to join
+  for (iinfo in seq_along(list_join_paths)){
+    list_join_paths[[iinfo]]$path$all_common_vars = NA
+    for (itable in 1:nrow(list_join_paths[[iinfo]]$path)){
+      current_fields = DBI::dbListFields(conn, list_join_paths[[iinfo]]$path$table_to_join[itable])
+      if (itable == 1){
+        previous_tables = list_join_paths[[iinfo]]$path$table_to_join[1]
+      } else {
+        previous_tables = list_join_paths[[iinfo]]$path$table_to_join[1:(itable - 1)]
+      }
+      previous_joins = vector(mode = "list", length = length(previous_tables))
+      for (iprevtable in seq_along(previous_joins)){
+        fields = DBI::dbListFields(conn, previous_tables[iprevtable])
+        previous_vars = c()
+        if (iprevtable > 1){
+          for (j in 1:(length(previous_joins) - 1)){
+            previous_vars = unique(c(previous_vars, previous_joins[[j]]$all_vars))
+          }
+        }
+
+        previous_joins[[iprevtable]]$all_vars = unique(c(fields[grepl("_id$", fields)], previous_vars))
+        previous_joins[[iprevtable]]$common_vars = previous_joins[[iprevtable]]$all_vars[previous_joins[[iprevtable]]$all_vars %in% current_fields]
+      }
+      if (itable == 1){
+        list_join_paths[[iinfo]]$path[itable, "all_common_vars"] = paste(
+          previous_joins[[itable]]$common_vars,
+          collapse = ","
+        )
+      } else {
+        list_join_paths[[iinfo]]$path[itable, "all_common_vars"] = paste(
+          previous_joins[[itable - 1]]$common_vars,
+          collapse = ","
+        )
+      }
+
+    }
+  }
   return(list_join_paths)
 }
