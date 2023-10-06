@@ -1,3 +1,18 @@
+#' Get Descriptive Information
+#'
+#' This function retrieves detailed information about datasets from a database connection.
+# It returns a data frame with a range of information related to the datasets, such as dataset IDs,
+# within and between manipulations, task name, number of participants, number of trials,
+# mean observations per participant, percentage congruent trials, percentage neutral trials,
+# time limit, mean reaction time (RT), and mean accuracy (acc).
+#
+#' @param conn A database connection object.
+#' @param arguments A list of arguments to filter the results.
+#' @param argument_relation A logical operator ('AND' or 'OR') for combining multiple filter conditions.
+#
+#' @return A data frame containing detailed information about datasets, including the specified parameters.
+
+#' @export
 get_descriptive_information <- function(conn, arguments, argument_relation){
   # This function should return the dataframe displayed in the
   # tab displaying more detailed information

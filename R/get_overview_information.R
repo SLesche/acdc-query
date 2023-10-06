@@ -1,3 +1,18 @@
+#' Get Overview Dataset Information
+#'
+#' This function retrieves an overview of dataset information from a database connection.
+# It returns a data frame with summary information for each dataset, including dataset ID, publication code,
+# author information, date conducted, task name, number of participants, number of trials, and indications of
+# the presence of within and between manipulations.
+#
+#' @param conn A database connection object.
+#' @param arguments A list of arguments to filter the dataset.
+#' @param argument_relation A logical operator ('AND' or 'OR') for combining multiple filter conditions.
+#
+#' @return A data frame containing summary information for each dataset, indicating the presence of within
+#' and between manipulations.
+#' @export
+#'
 get_overview_information <- function(conn, arguments, argument_relation){
   # This function should output the dataframe ultimately displayed in
   # the shiny app under the "overview" tab

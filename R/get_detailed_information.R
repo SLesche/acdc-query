@@ -1,3 +1,18 @@
+#' Get Detailed Dataset Information
+#'
+#' This function retrieves detailed information about a single dataset from a database connection.
+# It returns a list containing dataset-specific information, including dataset ID, within and between manipulations,
+# task name, number of participants, number of trials, mean observations per participant, percentage congruent trials,
+# percentage neutral trials, time limit, mean dataset-level reaction time (RT), and mean dataset-level accuracy (acc).
+# It also includes histograms for RT distributions within different conditions and the raw trial-level data.
+#
+#' @param conn A database connection object.
+#' @param arguments A list of arguments to filter the dataset.
+#' @param argument_relation A logical operator ('AND' or 'OR') for combining multiple filter conditions.
+#
+#' @return A list containing detailed information specific to the dataset, including information about the dataset itself,
+#' histograms of RT distributions within different conditions, and the raw trial-level data.
+#' @export
 get_detailed_information <- function(conn, arguments, argument_relation){
   # This function should get the data displayed when inspecting single dataset-ids.
   query_results_dataset = query_db(
