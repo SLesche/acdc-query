@@ -4,7 +4,7 @@
 \alias{find_relevant_tables}
 \title{Find relevant tables based on column name}
 \usage{
-find_relevant_tables(conn, column_name, info = NULL)
+find_relevant_tables(conn, column_name, info = NULL, strict = FALSE)
 }
 \arguments{
 \item{conn}{The connection object or database connection string.}
@@ -13,6 +13,8 @@ find_relevant_tables(conn, column_name, info = NULL)
 
 \item{info}{Optional. The information data frame obtained from \code{get_column_names()} function.
 If not provided, it will be obtained within the function.}
+
+\item{strict}{Should only one table be returned? Relevant for id variables}
 }
 \value{
 A character vector containing the names of the relevant tables.

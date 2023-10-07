@@ -4,7 +4,14 @@
 \alias{add_join_paths_to_query}
 \title{Add Join Paths to Query}
 \usage{
-add_join_paths_to_query(conn, argument, join_path_list, requested_vars = NULL)
+add_join_paths_to_query(
+  conn,
+  argument,
+  filter_statements,
+  join_path_list,
+  argument_sequence,
+  requested_vars = NULL
+)
 }
 \arguments{
 \item{conn}{The connection object or database connection string.}
