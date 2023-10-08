@@ -1,4 +1,3 @@
-#' @export
 write_sql_join_query <- function(conn, argument, join_path_list = NULL){
 # Could also compute the join_path_list
   if (is.null(join_path_list)){

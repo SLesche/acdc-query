@@ -7,18 +7,7 @@
 #'
 #' @return NULL (no explicit return value).
 #' @export
-#' @examples
-#' # Valid operator and values
-#' check_operator("greater", 10)
-#'
-#' # Invalid operator
-#' check_operator("invalid_operator", 5)
-#'
-#' # Invalid number of values for 'between' operator
-#' check_operator("between", c(1, 10, 20))
-#'
-#' # Invalid number of values for 'less' operator
-#' check_operator("less", c(5, 10))
+
 check_operator <- function(operator, values) {
   valid_operators = c("less", "greater", "between", "equal")
 
