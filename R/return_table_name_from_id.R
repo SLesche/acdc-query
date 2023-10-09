@@ -12,7 +12,7 @@
 return_table_name_from_id <- function(id_name){
   name = c()
   for (i in seq_along(id_name)){
-    name[i] = stringr::str_replace(id_name[i], "id$", "table")
+    name[i] = base::sub("id$", "table", id_name[i])
   }
   return(name)
 }

@@ -21,12 +21,12 @@ combine_sql_queries <- function(arguments, argument_sequence, path_list, request
     sql_queries[[i]] = convert_query_path_to_sql(arguments[[i]], path_list, requested_vars)
   }
 
-  sql_base = paste0(stringr::str_remove_all(sql_queries[[1]], "WHERE .*"), "WHERE ")
+  sql_base = paste0(base::gsub("WHERE .*", "", sql_queries[[1]]), "WHERE ")
 
-  sql_base_remove = stringr::str_replace(sql_base, " \\* ", ".*")
+  sql_base_remove = base::sub(" \\* ", ".*", sql_base)
 
   for (i in seq_along(sql_queries)){
-    sql_queries[[i]] = stringr::str_remove_all(sql_queries[[i]], sql_base_remove)
+    sql_queries[[i]] = base::gsub(sql_base_remove, "", sql_queries[[i]])
   }
 
 
@@ -57,7 +57,7 @@ combine_sql_queries <- function(arguments, argument_sequence, path_list, request
     selected_vars = paste(requested_vars, collapse = ", ")
   }
 
-  sql_base = stringr::str_replace(sql_base, " \\* ", selected_vars)
+  sql_base = base::sub(" \\* ", selected_vars, sql_base)
 
   final_query = paste0(sql_base, final_add)
 

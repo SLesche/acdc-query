@@ -15,7 +15,7 @@
 #'
 add_join_paths_to_query <- function(conn, argument, filter_statements, join_path_list, argument_sequence, requested_vars = NULL){
   base_argument = argument
-  starting_table = stringr::str_extract(base_argument, "[a-z]+_table")
+  starting_table = base::regmatches(base_argument, base::gregexpr("[a-z]+_table", base_argument))[[1]]
 
   starting_table_id = c()
 
@@ -39,9 +39,9 @@ add_join_paths_to_query <- function(conn, argument, filter_statements, join_path
 
 
   # if you want to select id vars from different tables, need to add the join-prefixes
-  if (any(stringr::str_detect(requested_vars, "id$"))){
+  if (any(base::grepl("id$", requested_vars))){
     for (i_var in seq_along(requested_vars)){
-      if (stringr::str_detect(requested_vars[i_var], "_id$")){
+      if (base::grepl("_id$", requested_vars[i_var])){
         join_prefix = introduction_table[which(introduction_table$newly_discovered_ids == requested_vars[i_var]), "join_table"]
         requested_vars[i_var] = paste0(join_prefix, ".", requested_vars[i_var])
       }
@@ -71,8 +71,6 @@ add_join_paths_to_query <- function(conn, argument, filter_statements, join_path
     upcoming_important_ids = upcoming_important_ids[(!upcoming_important_ids %in% already_introduced_ids) | (upcoming_important_ids %in% current_common_var)]
 
     relevant_field_names = DBI::dbListFields(conn, current_table_to_join)
-    # relevant_field_names = relevant_field_names[which(stringr::str_detect(relevant_field_names, "_id$", negate = TRUE) | relevant_field_names %in% upcoming_important_ids)]
-    # relevant_field_names = unique(c(relevant_field_names, return_id_name_from_table(current_table_to_join)))
     relevant_field_names = paste(relevant_field_names, collapse = ", ")
 
     common_vars = strsplit(path_dataframe$all_common_vars[i], ",")[[1]]

@@ -21,7 +21,7 @@ get_filter_statement <- function(filter_statements, argument_sequence, introduct
   # now I just have "AND" relations left
   final_add = paste(concatenated_args, collapse = " AND ")
 
-  no_where = stringr::str_remove_all(final_add, "WHERE ")
+  no_where = base::gsub("WHERE ", "", final_add)
   filter_statement = paste("WHERE", no_where)
 
   # and need to add table-prefixes to id variables
@@ -29,8 +29,8 @@ get_filter_statement <- function(filter_statements, argument_sequence, introduct
 
   for (iword in seq_along(split_statement)){
     if (grepl("_id$", split_statement[iword])){
-      no_id = stringr::str_remove(split_statement[iword], "[a-z]+_id$")
-      id = stringr::str_extract(split_statement[iword], "[a-z]+_id$")
+      no_id = base::sub("[a-z]+_id$", "", split_statement[iword])
+      id = base::regmatches(split_statement[iword], base::gregexpr("[a-z]+_id$", split_statement[iword]))[[1]]
       split_statement[iword] = paste0(
         no_id,
         introduction_table[introduction_table$newly_discovered_ids == id, "join_table"],

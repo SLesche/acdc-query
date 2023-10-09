@@ -12,7 +12,7 @@
 precompute_table_join_paths <- function(conn, input_table = NULL, relevant_tables = NULL){
   all_tables = DBI::dbListTables(conn)
 
-  tables = all_tables[stringr::str_detect(all_tables, "sqlite", negate = TRUE)]
+  tables = all_tables[!base::grepl("sqlite", all_tables)]
 
   if (is.null(relevant_tables)){
     relevant_tables = tables
@@ -25,7 +25,7 @@ precompute_table_join_paths <- function(conn, input_table = NULL, relevant_table
   for (i in seq_along(tables)){
     table_info[[i]]$table = tables[i]
     table_info[[i]]$fields = DBI::dbListFields(conn, tables[i])
-    table_info[[i]]$ids = table_info[[i]]$fields[stringr::str_detect(table_info[[i]]$fields, "id$")]
+    table_info[[i]]$ids = table_info[[i]]$fields[base::grepl("_id$", table_info[[i]]$fields)]
   }
 
   for (i in seq_along(table_info)){

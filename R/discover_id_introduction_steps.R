@@ -11,7 +11,7 @@
 #' @return A data frame with information about newly discovered IDs and the corresponding join step.
 discover_id_introduction_steps <- function(conn, full_path_dataframe){
   column_names = get_column_names(conn)
-  column_names = column_names[which(stringr::str_detect(column_names$column, "id")), ]
+  column_names = column_names[which(base::grepl("_id$", column_names$column)), ]
 
   discovered_ids = data.frame()
 

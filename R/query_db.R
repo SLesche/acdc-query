@@ -32,15 +32,17 @@ query_db <- function(conn, arguments, target_vars = NULL, argument_relation = "a
   for (i in seq_along(arguments)){
     filter_variables = c(
       filter_variables,
-      stringr::str_remove(
-        stringr::str_extract_all(
-          arguments[[i]], "WHERE [a-z_A-Z]+"
-        ),
-        "WHERE "
+      base::sub(
+        "WHERE ",
+        "",
+        base::regmatches(
+          arguments[[i]], 
+          base::gregexpr(arguments[[i]], "WHERE [a-z_A-Z]+")
+        )
       )
     )
 
-    filter_statements[[i]] = stringr::str_extract(arguments[[i]], "WHERE .*")
+    filter_statements[[i]] = base::regmatches(arguments[[i]], base::gregexpr("WHERE .*", arguments[[i]]))[[1]]
   }
 
   col_names = get_column_names(conn)

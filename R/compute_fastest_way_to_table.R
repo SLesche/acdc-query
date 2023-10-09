@@ -11,7 +11,7 @@
 #' @return A list of join paths with waypoint tables and walk approaches.
 compute_fastest_way_to_table <- function(conn, input_table = NULL, target_table = "observation_table"){
   all_tables = DBI::dbListTables(conn)
-  tables = all_tables[stringr::str_detect(all_tables, "sqlite", negate = TRUE)]
+  tables = all_tables[!base::grepl("sqlite", all_tables)]
 
   n_tables = length(tables)
 
@@ -21,7 +21,7 @@ compute_fastest_way_to_table <- function(conn, input_table = NULL, target_table 
   for (i in seq_along(tables)){
     table_info[[i]]$table = tables[i]
     table_info[[i]]$fields = DBI::dbListFields(conn, tables[i])
-    table_info[[i]]$ids = table_info[[i]]$fields[stringr::str_detect(table_info[[i]]$fields, "id$")]
+    table_info[[i]]$ids = table_info[[i]]$fields[base::grepl("id$", table_info[[i]]$fields)]
   }
 
   target_table_index = c()
