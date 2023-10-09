@@ -32,3 +32,39 @@ The query results as a data frame.
 \description{
 This function performs targeted queries on a database using specified filtering arguments and returns the query results.
 }
+\examples{
+conn <- connect_to_db(":memory:")
+
+mtcars$mtcars_id = 1:nrow(mtcars)
+PlantGrowth$plant_id = 1:nrow(PlantGrowth)
+PlantGrowth$mtcars_id = 30:1
+
+DBI::dbWriteTable(conn, "mtcars_table", mtcars)
+DBI::dbWriteTable(conn, "plant_table", PlantGrowth)
+
+arguments = list()
+arguments = add_argument(
+ list = arguments,
+ conn = conn,
+ variable = "cyl",
+ operator = "equal",
+ values = c(4, 6)
+)
+
+arguments = add_argument(
+ list = arguments,
+ conn = conn,
+ variable = "weight",
+ operator = "greater",
+ values = 5
+)
+
+query_results = query_db(
+ conn = conn,
+ arguments = arguments,
+ target_vars = c("mtcars_id", "plant_id", "cyl", "weight"),
+ argument_relation = "and",
+ target_table = "plant_table",
+ full_db = TRUE
+)
+}

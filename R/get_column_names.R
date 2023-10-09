@@ -5,6 +5,7 @@
 #' @param conn The connection object or database connection string.
 #'
 #' @return A data frame containing the column names and corresponding table names.
+#' @import DBI
 get_column_names <- function(conn) {
   tables = DBI::dbListTables(conn)
   tables = tables[tables != "sqlite_sequence"]

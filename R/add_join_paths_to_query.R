@@ -14,7 +14,7 @@
 #'   If `NULL`, all variables are selected.
 #'
 #' @return A SQL query string that represents the joined tables and requested variables.
-#'
+#' @import DBI
 add_join_paths_to_query <- function(conn, argument, filter_statements, join_path_list, argument_sequence, requested_vars = NULL){
   base_argument = argument
   starting_table = base::regmatches(base_argument, base::gregexpr("[a-z]+_table", base_argument))[[1]][1]

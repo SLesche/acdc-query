@@ -2,17 +2,9 @@
 % Please edit documentation in R/add_argument.R
 \name{add_argument}
 \alias{add_argument}
-\title{Add an argument to a list}
+\title{Add a filter argument to a list}
 \usage{
-add_argument(
-  list,
-  conn,
-  variable,
-  operator,
-  values,
-  manual = FALSE,
-  statement = NULL
-)
+add_argument(list, conn, variable, operator, values, statement = NULL)
 }
 \arguments{
 \item{list}{The list to which the argument will be added.}
@@ -25,15 +17,31 @@ add_argument(
 
 \item{values}{The values to be used in the argument.}
 
-\item{manual}{A logical value indicating whether the argument should be created automatically or manually.
-If \code{FALSE}, the argument is created automatically using the provided parameters.
-If \code{TRUE}, the \code{statement} parameter must be specified.}
-
-\item{statement}{The manual argument select statement to be used. Required if \code{manual = TRUE}.}
+\item{statement}{The manual argument select statement to be used.}
 }
 \value{
 The updated list with the added argument.
 }
 \description{
 This function adds an argument to a list based on specified conditions.
+}
+\examples{
+conn <- connect_to_db(":memory:")
+
+DBI::dbWriteTable(conn, "mtcars", mtcars)
+
+arguments = list()
+arguments = add_argument(
+ list = arguments,
+ conn = conn,
+ variable = "cyl",
+ operator = "equal",
+ values = c(4, 6)
+)
+
+manual_arguments = add_argument(
+ list = arguments,
+ conn = conn,
+ statement = "SELECT carb FROM mtcars WHERE cyl = 4 OR cyl = 6)"
+)
 }

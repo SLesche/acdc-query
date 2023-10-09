@@ -16,7 +16,11 @@ A database connection object.
 This function establishes a connection to a SQLite database file located at the specified path using the DBI and RSQLite packages.
 }
 \examples{
-# Connect to a SQLite database file named "mydb.db" in the current working directory
-connection <- connect_to_db("mydb.db")
+# Connect to a SQLite database file in memory
+conn <- connect_to_db(":memory:")
+
+# When connecting to a specific file, like the downloaded ACDC-Database just use the path to the database
+
+# conn <- connect_to_db("path/to/database.db")
 
 }
