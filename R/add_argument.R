@@ -7,23 +7,16 @@
 #' @param variable The variable name to be used in the argument.
 #' @param operator The operator to be used in the argument (e.g., "greater", "between", "equal", "less").
 #' @param values The values to be used in the argument.
-#' @param manual A logical value indicating whether the argument should be created automatically or manually.
-#'   If `FALSE`, the argument is created automatically using the provided parameters.
-#'   If `TRUE`, the `statement` parameter must be specified.
-#' @param statement The manual argument select statement to be used. Required if `manual = TRUE`.
+#' @param statement The manual argument select statement to be used..
 #'
 #' @return The updated list with the added argument.
 #' @export
 
-add_argument <- function(list, conn, variable, operator, values, manual = FALSE, statement = NULL) {
-  if (manual == FALSE) {
+add_argument <- function(list, conn, variable, operator, values, statement = NULL) {
+  if (is.null(statement)) {
     list[[length(list) + 1]] = make_valid_sql(conn, variable, operator, values)
   } else {
-    if (is.null(statement)) {
-      stop("When using manual argument select, specify a statement variable")
-    } else {
-      list[[length(list) + 1]] = statement
-    }
+    list[[length(list) + 1]] = statement
   }
   return(list)
 }
