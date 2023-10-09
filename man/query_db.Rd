@@ -20,11 +20,11 @@ query_db(
 
 \item{target_vars}{A character vector specifying the variables to be included in the query results.}
 
-\item{argument_relation}{A character string specifying the relation between filtering arguments ("and" or "or").}
+\item{argument_relation}{A character string specifying the relation between filtering arguments ("and" or "or" or a numerical vector with the same length as the number of arguments).}
 
 \item{target_table}{The target table in the database for querying.}
 
-\item{full_db}{A logical value indicating whether to return the entire database. Only works when the target table is "observation_table".}
+\item{full_db}{A logical value indicating whether target variables are located only in one table, or distributed among multiple tables in the database.}
 }
 \value{
 The query results as a data frame.

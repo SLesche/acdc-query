@@ -11,8 +11,8 @@
 #' # Connect to a SQLite database file in memory
 #' conn <- connect_to_db(":memory:")
 #' 
-#' # When connecting to a specific file, like the downloaded ACDC-Database just use the path to the database
-#' 
+#' # When connecting to a specific file, like the downloaded ACDC-Database 
+#' # just use the path to the database 
 #' # conn <- connect_to_db("path/to/database.db")
 #'
 #' @import DBI
