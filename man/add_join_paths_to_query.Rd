@@ -18,8 +18,12 @@ add_join_paths_to_query(
 
 \item{argument}{The base argument that will be used to build the query.}
 
+\item{filter_statements}{The SQL-Filter statements extracted from the filter arguments list via 'get_filter_statement()'.}
+
 \item{join_path_list}{A list representing the join path. Each element of the list should be a data frame
 describing a step in the join path with columns: "table_to_join", "method", and "common_var".}
+
+\item{argument_sequence}{A numeric vector representing the AND/OR sequence of arguments.}
 
 \item{requested_vars}{A character vector specifying the variables to be selected from the final query result.
 If \code{NULL}, all variables are selected.}

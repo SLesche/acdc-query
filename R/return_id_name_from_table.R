@@ -6,9 +6,6 @@
 #' @param table_name The name of the table.
 #'
 #' @return The generated ID column name.
-#' @examples
-#' # Return ID column name from table name
-#' return_id_name_from_table("publication_table")
 return_id_name_from_table <- function(table_name){
   name = c()
   for (i in seq_along(table_name)){
