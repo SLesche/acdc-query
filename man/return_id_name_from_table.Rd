@@ -16,7 +16,3 @@ The generated ID column name.
 This function generates the ID column name based on the provided table name.
 It replaces the "table" suffix with "id" to obtain the ID column name.
 }
-\examples{
-# Return ID column name from table name
-return_id_name_from_table("publication_table")
-}
