@@ -1,6 +1,8 @@
 #' Add a filter argument to a list
 #'
-#' This function adds an argument to a list based on specified conditions.
+#' This function adds an argument to a list containing filter arguments later used to query databases. 
+#' The user can either specify the variable on which to filter on and the operator and value used in the filter or specify an SQL query manually.
+#' When supplying only variable, operator and value, a SQL query will be constructed for the user and added as the next object to a list.
 #'
 #' @param list The list to which the argument will be added.
 #' @param conn The connection object or database connection string.

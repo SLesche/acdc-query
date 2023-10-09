@@ -5,9 +5,9 @@
 #' @param conn The connection object or database connection string.
 #' @param arguments A list of filtering arguments for the query.
 #' @param target_vars A character vector specifying the variables to be included in the query results.
-#' @param argument_relation A character string specifying the relation between filtering arguments ("and" or "or").
+#' @param argument_relation A character string specifying the relation between filtering arguments ("and" or "or" or a numerical vector with the same length as the number of arguments).
 #' @param target_table The target table in the database for querying.
-#' @param full_db A logical value indicating whether to return the entire database. Only works when the target table is "observation_table".
+#' @param full_db A logical value indicating whether target variables are located only in one table, or distributed among multiple tables in the database.
 #'
 #' @return The query results as a data frame.
 #' @import DBI
@@ -110,7 +110,7 @@ query_db <- function(conn, arguments, target_vars = NULL, argument_relation = "a
   }
 
   if (full_db == FALSE){
-    data = dbGetQuery(
+    data = DBI::dbGetQuery(
       conn,
       combine_sql_queries(
         arguments,
@@ -120,7 +120,7 @@ query_db <- function(conn, arguments, target_vars = NULL, argument_relation = "a
       )
     )
   } else {
-    data = dbGetQuery(
+    data = DBI::dbGetQuery(
       conn,
       add_join_paths_to_query(
         conn,
