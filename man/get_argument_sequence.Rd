@@ -20,20 +20,3 @@ A numeric vector representing the sequence of arguments.
 This function returns the sequence of arguments based on the specified argument relation.
 The argument relation determines the logical relationship between the arguments (e.g., "and", "or").
 }
-\examples{
-# Get argument sequence with "and" relation
-arguments <- list("arg1", "arg2", "arg3")
-argument_sequence <- get_argument_sequence(arguments, argument_relation = "and")
-argument_sequence
-
-# Get argument sequence with "or" relation
-arguments <- list("arg1", "arg2", "arg3")
-argument_sequence <- get_argument_sequence(arguments, argument_relation = "or")
-argument_sequence
-
-# Get argument sequence with custom relation
-arguments <- list("arg1", "arg2", "arg3")
-argument_relation <- c("or", "and", "or")
-argument_sequence <- get_argument_sequence(arguments, argument_relation)
-argument_sequence
-}

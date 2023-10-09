@@ -22,11 +22,3 @@ A character vector containing the names of the relevant tables.
 \description{
 This function finds the relevant database tables that contain a specified column.
 }
-\examples{
-# Find relevant tables
-my_conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-DBI::dbExecute(my_conn, "CREATE TABLE table1 (id INTEGER PRIMARY KEY, name TEXT)")
-DBI::dbExecute(my_conn, "CREATE TABLE table2 (id INTEGER PRIMARY KEY, age INTEGER)")
-tables <- find_relevant_tables(conn = my_conn, column_name = "id")
-tables
-}

@@ -14,7 +14,6 @@
 #'   If \code{NULL}, all variables are selected.
 #'
 #' @return A combined SQL query string that integrates the specified queries using logical OR and AND operations.
-#' @export
 combine_sql_queries <- function(arguments, argument_sequence, path_list, requested_vars = NULL){
   sql_queries = vector(mode = "list", length = length(arguments))
 

@@ -9,7 +9,6 @@
 #' @param relevant_tables A vector of tables that are relevant to the query.
 #'
 #' @return A list of join paths for each table in the database.
-#' @export
 precompute_table_join_paths <- function(conn, input_table = NULL, relevant_tables = NULL){
   all_tables = DBI::dbListTables(conn)
 

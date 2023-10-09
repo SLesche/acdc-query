@@ -12,7 +12,6 @@
 #'   If \code{NULL}, all variables are selected.
 #'
 #' @return A SQL query string that represents the desired filtering and joins on the target table.
-#' @export
 convert_query_path_to_sql <- function(argument, path_list, requested_vars = NULL){
   # This function aims to convert a table-specific filtering argument specified
   # in 'argument' to a more general SQL query that returns entries from the

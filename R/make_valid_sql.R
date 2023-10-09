@@ -9,13 +9,6 @@
 #' @param values The values to be used in the SQL statement.
 #'
 #' @return A character string representing the valid SQL statement.
-#' @export
-#' @examples
-#' # Create a valid SQL statement
-#' my_conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-#' DBI::dbExecute(my_conn, "CREATE TABLE my_table (id INTEGER PRIMARY KEY, name TEXT)")
-#' statement <- make_valid_sql(conn = my_conn, variable = "name", operator = "equal", values = c("John", "Jane"))
-#' statement
 make_valid_sql <- function(conn, variable, operator, values) {
   # if the variable is an id-name, it should be filtered in its table
   is_table = return_table_name_from_id(variable)

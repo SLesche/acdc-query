@@ -9,7 +9,6 @@
 #' @param target_table The target table that you want to reach through joins.
 #'
 #' @return A list of join paths with waypoint tables and walk approaches.
-#' @export
 compute_fastest_way_to_table <- function(conn, input_table = NULL, target_table = "observation_table"){
   all_tables = DBI::dbListTables(conn)
   tables = all_tables[stringr::str_detect(all_tables, "sqlite", negate = TRUE)]

@@ -9,14 +9,6 @@
 #' @param strict Should only one table be returned? Relevant for id variables
 #'
 #' @return A character vector containing the names of the relevant tables.
-#' @export
-#' @examples
-#' # Find relevant tables
-#' my_conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-#' DBI::dbExecute(my_conn, "CREATE TABLE table1 (id INTEGER PRIMARY KEY, name TEXT)")
-#' DBI::dbExecute(my_conn, "CREATE TABLE table2 (id INTEGER PRIMARY KEY, age INTEGER)")
-#' tables <- find_relevant_tables(conn = my_conn, column_name = "id")
-#' tables
 find_relevant_tables <- function(conn, column_name, info = NULL, strict = FALSE) {
   # TODO: maybe save an info-data and use that, check speed of get_column_names
   if (strict == TRUE & grepl("_id$", column_name)){

@@ -15,11 +15,3 @@ A data frame containing the column names and corresponding table names.
 \description{
 This function retrieves the column names from all tables in the specified database connection.
 }
-\examples{
-# Get column names from tables
-my_conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-DBI::dbExecute(my_conn, "CREATE TABLE table1 (id INTEGER PRIMARY KEY, name TEXT)")
-DBI::dbExecute(my_conn, "CREATE TABLE table2 (id INTEGER PRIMARY KEY, age INTEGER)")
-column_names <- get_column_names(conn = my_conn)
-column_names
-}

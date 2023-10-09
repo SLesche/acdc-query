@@ -22,10 +22,3 @@ A character string representing the valid SQL statement.
 This function creates a valid SQL statement based on the specified variable, operator, and values.
 It handles different operators such as "greater", "less", "equal", and "between".
 }
-\examples{
-# Create a valid SQL statement
-my_conn <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
-DBI::dbExecute(my_conn, "CREATE TABLE my_table (id INTEGER PRIMARY KEY, name TEXT)")
-statement <- make_valid_sql(conn = my_conn, variable = "name", operator = "equal", values = c("John", "Jane"))
-statement
-}

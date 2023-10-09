@@ -9,23 +9,6 @@
 #'   If a vector is provided, it should have the same length as the number of arguments.
 #'
 #' @return A numeric vector representing the sequence of arguments.
-#' @export
-#' @examples
-#' # Get argument sequence with "and" relation
-#' arguments <- list("arg1", "arg2", "arg3")
-#' argument_sequence <- get_argument_sequence(arguments, argument_relation = "and")
-#' argument_sequence
-#'
-#' # Get argument sequence with "or" relation
-#' arguments <- list("arg1", "arg2", "arg3")
-#' argument_sequence <- get_argument_sequence(arguments, argument_relation = "or")
-#' argument_sequence
-#'
-#' # Get argument sequence with custom relation
-#' arguments <- list("arg1", "arg2", "arg3")
-#' argument_relation <- c("or", "and", "or")
-#' argument_sequence <- get_argument_sequence(arguments, argument_relation)
-#' argument_sequence
 get_argument_sequence <- function(arguments, argument_relation) {
   if (length(argument_relation) == 1) {
     if (argument_relation == "and") {

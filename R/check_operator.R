@@ -6,7 +6,6 @@
 #' @param values The values to be checked.
 #'
 #' @return NULL (no explicit return value).
-#' @export
 
 check_operator <- function(operator, values) {
   valid_operators = c("less", "greater", "between", "equal")
