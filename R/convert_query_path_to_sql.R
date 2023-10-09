@@ -20,8 +20,8 @@ convert_query_path_to_sql <- function(argument, path_list, requested_vars = NULL
   # and then use this tables pathway to the target table to build the SQL-Query
 
   base_argument = argument
-  starting_table = base::regmatches(base_argument, base::gregexpr("[a-z]+_table", base_argument))[[1]]
-  filter_statement = base::regmatches(base_argument, base::gregexpr( "WHERE .*$", base_argument))[[1]]
+  starting_table = base::regmatches(base_argument, base::gregexpr("[a-z]+_table", base_argument))[[1]][1]
+  filter_statement = base::regmatches(base_argument, base::gregexpr( "WHERE .*$", base_argument))[[1]][1]
   starting_table_index = c()
 
   for (i in seq_along(path_list)){

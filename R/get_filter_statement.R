@@ -41,7 +41,7 @@ get_filter_statement <- function(filter_statements, argument_sequence, introduct
   for (iword in seq_along(split_statement)){
     if (grepl("_id$", split_statement[iword])){
       no_id = base::sub("[a-z]+_id$", "", split_statement[iword])
-      id = base::regmatches(split_statement[iword], base::gregexpr("[a-z]+_id$", split_statement[iword]))[[1]]
+      id = base::regmatches(split_statement[iword], base::gregexpr("[a-z]+_id$", split_statement[iword]))[[1]][1]
       split_statement[iword] = paste0(
         no_id,
         introduction_table[introduction_table$newly_discovered_ids == id, "join_table"],

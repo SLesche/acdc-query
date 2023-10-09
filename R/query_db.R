@@ -36,8 +36,8 @@ query_db <- function(conn, arguments, target_vars = NULL, argument_relation = "a
         "WHERE ",
         "",
         base::regmatches(
-          arguments[[i]], 
-          base::gregexpr(arguments[[i]], "WHERE [a-z_A-Z]+")
+          arguments[[i]],
+          base::gregexpr("WHERE [a-z_A-Z]+", arguments[[i]])
         )
       )
     )
