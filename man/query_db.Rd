@@ -24,7 +24,7 @@ query_db(
 \item{argument_relation}{A character string specifying the relation between filtering arguments ("and" or "or" or a numerical vector with the same length as the number of arguments).}
 }
 \value{
-The query results as a data frame.
+A data frame containing the query results.
 }
 \description{
 This function performs targeted queries on a database using specified filtering arguments and returns the query results.

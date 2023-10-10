@@ -20,7 +20,7 @@ add_argument(list, conn, variable, operator, values, statement = NULL)
 \item{statement}{The manual argument select statement to be used.}
 }
 \value{
-The updated list with the added argument.
+A list object with the new argument added.
 }
 \description{
 This function adds an argument to a list containing filter arguments later used to query databases.
