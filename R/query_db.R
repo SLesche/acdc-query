@@ -1,9 +1,11 @@
 #' Query Database
 #'
-#' This function performs targeted queries on a database using specified filtering arguments and returns the query results.
-#'
+#' This function performs targeted queries on a database using specified filtering arguments and returns the query results. 
+#' It extracts information about which tables of the database are relevant for the query and then joins these relevant tables to the target table.
+#' The function constructs an SQL query which incorporates both the joining and filtering. This SQL statement is then applied to the database and the resulting dataframe is returned to the user.
+#' 
 #' @param conn The connection object to an SQLite database.
-#' @param arguments A list of filtering arguments for the query.
+#' @param arguments A list of filtering arguments for the query. The list must have only one filter argument per list-entry.
 #' @param target_vars A character vector specifying the variables to be included in the query results.
 #   If "default" is included as an element in the vector, it will be replaced by all variables present in the target_table.
 #' @param target_table The target table in the database for querying.
@@ -108,19 +110,23 @@ query_db <- function(conn, arguments, target_vars = "default", target_table = "o
 
   relevant_tables = unique(relevant_tables)
 
+  # Construct SQL query
+  sql_query = add_join_paths_to_query(
+    conn,
+    filter_statements = filter_statements,
+    join_path_list = precompute_table_join_paths(
+      conn = conn,
+      input_table = target_table,
+      relevant_tables = relevant_tables
+    ),
+    argument_sequence = argument_sequence,
+    requested_vars = target_vars
+  )
+
+  # Send to db
   data = DBI::dbGetQuery(
     conn,
-    add_join_paths_to_query(
-      conn,
-      filter_statements = filter_statements,
-      join_path_list = precompute_table_join_paths(
-        conn = conn,
-        input_table = target_table,
-        relevant_tables = relevant_tables
-      ),
-      argument_sequence = argument_sequence,
-      requested_vars = target_vars
-    )
+    sql_query
   )
 
 
