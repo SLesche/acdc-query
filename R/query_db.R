@@ -2,11 +2,12 @@
 #'
 #' This function performs targeted queries on a database using specified filtering arguments and returns the query results.
 #'
-#' @param conn The connection object or database connection string.
+#' @param conn The connection object to an SQLite database.
 #' @param arguments A list of filtering arguments for the query.
 #' @param target_vars A character vector specifying the variables to be included in the query results.
-#' @param argument_relation A character string specifying the relation between filtering arguments ("and" or "or" or a numerical vector with the same length as the number of arguments).
+#   If "default" is included as an element in the vector, it will be replaced by all variables present in the target_table.
 #' @param target_table The target table in the database for querying.
+#' @param argument_relation A character string specifying the relation between filtering arguments ("and" or "or" or a numerical vector with the same length as the number of arguments).
 #'
 #' @return The query results as a data frame.
 #' @import DBI
@@ -39,14 +40,25 @@
 #'  values = 5
 #' )
 #'
+#' # Return specified variables
+#' target_vars = c("mtcars_id", "plant_id", "cyl", "weight")
 #' query_results = query_db(
 #'  conn = conn,
 #'  arguments = arguments,
-#'  target_vars = c("mtcars_id", "plant_id", "cyl", "weight"),
-#'  argument_relation = "and",
-#'  target_table = "plant_table"
+#'  target_vars = target_vars,
+#'  target_table = "plant_table",
+#'  argument_relation = "and"
 #' )
-query_db <- function(conn, arguments, target_vars = "default", argument_relation = "and", target_table = "observation_table"){
+#'
+#' # Return all variables in plant_table and cyl from mtcars_table
+#' query_results = query_db(
+#'  conn = conn,
+#'  arguments = arguments,
+#'  target_vars = c("default", "cyl"),
+#'  target_table = "plant_table",
+#'  argument_relation = "and"
+#' )
+query_db <- function(conn, arguments, target_vars = "default", target_table = "observation_table", argument_relation = "and"){
   # Convert argument_relation into proper numerical vector
   argument_sequence = get_argument_sequence(arguments, argument_relation)
 
