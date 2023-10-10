@@ -8,20 +8,20 @@ query_db(
   conn,
   arguments,
   target_vars = "default",
-  argument_relation = "and",
-  target_table = "observation_table"
+  target_table = "observation_table",
+  argument_relation = "and"
 )
 }
 \arguments{
-\item{conn}{The connection object or database connection string.}
+\item{conn}{The connection object to an SQLite database.}
 
 \item{arguments}{A list of filtering arguments for the query.}
 
 \item{target_vars}{A character vector specifying the variables to be included in the query results.}
 
-\item{argument_relation}{A character string specifying the relation between filtering arguments ("and" or "or" or a numerical vector with the same length as the number of arguments).}
-
 \item{target_table}{The target table in the database for querying.}
+
+\item{argument_relation}{A character string specifying the relation between filtering arguments ("and" or "or" or a numerical vector with the same length as the number of arguments).}
 }
 \value{
 The query results as a data frame.
@@ -33,11 +33,15 @@ This function performs targeted queries on a database using specified filtering 
 conn <- connect_to_db(":memory:")
 
 mtcars$mtcars_id = 1:nrow(mtcars)
-PlantGrowth$plant_id = 1:nrow(PlantGrowth)
-PlantGrowth$mtcars_id = 30:1
+
+example_data = data.frame(
+  example_id = 1:150,
+  mtcars_id = rep(1:30, each = 5),
+  example_value = runif(150, 0, 1)
+)
 
 DBI::dbWriteTable(conn, "mtcars_table", mtcars)
-DBI::dbWriteTable(conn, "plant_table", PlantGrowth)
+DBI::dbWriteTable(conn, "example_table", example_data)
 
 arguments = list()
 arguments = add_argument(
@@ -51,16 +55,27 @@ arguments = add_argument(
 arguments = add_argument(
  list = arguments,
  conn = conn,
- variable = "weight",
+ variable = "example_value",
  operator = "greater",
- values = 5
+ values = 0.4
 )
 
+# Return specified variables
+target_vars = c("mtcars_id", "example_id", "cyl")
 query_results = query_db(
  conn = conn,
  arguments = arguments,
- target_vars = c("mtcars_id", "plant_id", "cyl", "weight"),
- argument_relation = "and",
- target_table = "plant_table"
+ target_vars = target_vars,
+ target_table = "example_table",
+ argument_relation = "and"
+)
+
+# Return all variables in mtcars_table and example_value from example_table
+query_results = query_db(
+ conn = conn,
+ arguments = arguments,
+ target_vars = c("default", "example_value"),
+ target_table = "mtcars_table",
+ argument_relation = "and"
 )
 }
