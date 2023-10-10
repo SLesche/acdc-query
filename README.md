@@ -1,12 +1,12 @@
-# acdc-query: Query the Attentional Control Data Collection
+# acdcquery: Query the Attentional Control Data Collection
 ## Installation
 You can install this package via `devtools::install_github("SLesche/acdc-query")`. You may need to update imported packages.
 
 ## Dependencies
-This package is designed for use in R 4.2.2. Certain functions may break in different R versions. It heavily relies on the packages DBI, RSQLite
+This package is designed for use in R 4.2.2. It imports the packages DBI and RSQLite.
 
 ## Use
-In order to interact with the database, you must first [download](https://github.com/jstbcs/inhibitiontasks/raw/inhibitiontaks_db2023/inhibitiontasks.db) it from its [parent repo](https://github.com/jstbcs/inhibitiontasks/tree/inhibitiontaks_db2023).
+In order to interact with the database, you must first [download](https://github.com/jstbcs/acdc-database/raw/main/acdc.db) it from its [parent repo](https://github.com/jstbcs/acdc-database/tree/main).
 
 To query the database, specify the connection to the database (obtained via `conn <- connect_to_db("path/to/db.db")`), a list of filter arguments (obtained by using `add_argument()`), and a vector containing the names of the variables you want returned.
 
@@ -14,17 +14,18 @@ To query the database, specify the connection to the database (obtained via `con
 ```
 # devtools::install_github("SLesche/acdcquery")
 library(acdcquery)
-library(dplyr) # for pipe operators
-conn <- connect_to_db("inhibitiontasks.db")
+conn <- connect_to_db("path/to/db.db")
 
-arguments <- list() %>% 
-  add_argument(
+arguments <- list() 
+arguments <- add_argument(
+    list = arguments,
     conn = conn,
     variable = "n_participants",
     operator = "greater",
     values = 200
-  ) %>% 
-  add_argument(
+  )
+arguments <- add_argument(
+    list = arguments,
     conn = conn,
     variable = "task_name",
     operator = "equal",
@@ -38,12 +39,13 @@ df <- query_db(conn, arguments, requested_vars)
 
 ## Documentation
 ### General
-Querying is accomplished by lower level functions using user input to construct an SQL-query which is then applied to the database. To query the full database and select a subset of variables to be returned, functions locate the tables in which the requested variables are present and construct an SQL query selecting those rows of the observation table that match the filter arguments in the respective tables. If multiple filter arguments are present, the variable `argument_relation` controls how these are combined. 
+Querying is accomplished by lower level functions using user input to construct an SQL-query which is then applied to the database. To query the full database and select a subset of variables to be returned, functions locate the tables in which the requested variables are present and construct an SQL query selecting those rows of the the target table that match the filter arguments in the respective tables. If multiple filter arguments are present, the variable `argument_relation` controls how these are combined. 
 
-This database consists of multiple tables, each with variables potentially used when filtering. This presents an interesting challenge, as a user should be able to filter based on any argument in any table (and even multiple arguments each located in different tables) and return the requested variables. These returned variables may themselves need to be assembled from different tables.
+This database consists of multiple tables, each with variables potentially used when filtering. You are be able to filter based on any argument in any table (and even multiple arguments each located in different tables) and return the requested variables. These returned variables may themselves be located in different tables.
 
 ### Filter Arguments
-The filter function requires 3 main inputs. The connection to the database `conn`, a vector of the requested variables to be returned to the user `target_vars` and a list of the filter arguments `arguments`. The function `add_argument()` can be used for creating this list of filter arguments. Its objective is to provide a user-friendly way of specifying the variable and conditions used when filtering the database. Detailed information is provided in the function's source code. Briefly, to use `add_argument()`, users have to provide the connection to the database `conn`, which allows the function to validate that the variable is present in the database and locate the table in which the variable is present. Furthermore, users need to specify the `variable`, the `operator` and the `value` (or values) which make up the filter argument. Please find an example of creating filter arguments to query the database to only return entries where _the study contains more than 200 participants_ and _the study used either stroop or flanker tasks_ below.
+`query_db()` requires 3 main inputs. The connection to the database `conn`, a vector of the requested variables to be returned to the user `target_vars` and a list of the filter arguments `arguments`. The function `add_argument()` can be used for creating this list of filter arguments. Its objective is to provide a user-friendly way of specifying the variable and conditions used when filtering the database. To use `add_argument()`, users have to provide the connection to the database `conn`, which allows the function to validate that the variable is present in the database and locate the table in which the variable is present. Furthermore, users need to specify the `variable`, the `operator` and the `value` (or values) which make up the filter argument. Please find an example of creating filter arguments to query the database to only return entries where _the study contains more than 200 participants_ and _the study used either stroop or flanker tasks_ below. `add_argument()` uses this input to construct an SQL query that corresponds to the filter condition and selects the primary key of the table the filter variable is located in and returns this filter as the next entry in a list. In the above example, `arguments` is a list of 2 elements. The first being the character string "SELECT dataset_id FROM dataset_table WHERE n_participants > 200" and the second the string "SELECT task_id FROM task_table WHERE task_name = 'stroop' OR task_name = 'flanker'". Further information can be found in the functions source code.
+
 ```{r}
 conn <- acdcquery::connect_to_db("acdc.db")
 
@@ -66,8 +68,6 @@ arguments <- acdcquery::add_argument(
 
 ```
 
-`add_argument()` uses this input to construct an SQL query that corresponds to the filter condition and selects the primary key of the table the filter variable is located in and returns this filter as the next entry in a list. In the above example, `arguments` is a list of 2 elements. The first being the character string "SELECT dataset_id FROM dataset_table WHERE n_participants > 200" and the second the string "SELECT task_id FROM task_table WHERE task_name = 'stroop' OR task_name = 'flanker'".
-
 ### Argument Relations
 When using multiple different arguments to filter, you may specify the operators used to combine these arguments. This can be done via the `argument_relation` argument in the `query_db()` function. This argument takes either the strings "and" or "or" or a numerical vector with length equal to the number of arguments specified. "and" or "or" result in all arguments being connected via the respective operator, with "and" being the default option. Passing a numerical vector allows more complicated logical combinations of filter arguments. Each entry of the vector should correspond to a filter argument. Arguments corresponding to the same number in the vector are combined via an "OR" operator. Arguments corresponding to different numbers are combined via an "AND" operator.
 
@@ -76,27 +76,15 @@ If you specify 4 arguments A, B, C, D and want to filter the database such that 
 ### Forward and Backward Connections
 This database contains multiple tables each connected via primary and foreign keys. A _forward connection_ in our terminology is any table whose primary key is listed as a foreign key in the current table. The observation table, for example, has forward connections to the dataset, between, within and condition tables. A _backward connection_ represents the opposite path. The dataset table has a backward connection to the observation table. These two means of connections between tables are relevant when filtering and joining tables.
 
-### target_table and full_db
+### Target Table and Target Variables
+You may select any variable present in any table the database and specify them inside a vector `target_vars = c("variable1", "variable2", "variable3")`. If you want to select all variables of your `target_table`, add "default" as an element to the vector (`target_vars = c("default", "variable1", "variable2"`). You will be returned all variables present in the target_table as well as "variable1" and "variable2".
 
+The argument `target_table` controls which table is used as as the starting point for querying. Your choice of the `target_table` has several implications. Most importanlty, it influences the number of (possibly redundant) rows returned to you. If you select the "observation_table" as the target table, which contains trial-level data, but are only interested in variables on dataset-level, i.e. only have `target_vars = c("dataset_id", "n_participants")`, the function will return all rows of the observation_table that satisfy the filtering requirement. "dataset_id" and "n_participants" will be join onto the observation_table and then selected to be returned to you, but you will receive as many rows of the same "dataset_id" and "n_participants" as the observation_table with its trial-level data retained after filtering. The majority of these rows will be duplicates. 
 
-### Filter Paths
-Querying makes use of the function `compute_fastest_way_to_table()` which discovers the fastest way from a given input table to a specified target table, while avoiding connections through the observation table. If the user filters based on a variable in the _study table_, for example. The fastest way towards the observation table starting from the task-table, as in the second argument in the example above, is through the dataset-table. The function `convert_query_path_to_sql()` takes the filter-argument and the list containing path info returned by `compute_fastest_way_to_table()` and extends the SQL query to now select from the observation table:
-> "SELECT * FROM observation_table AS tab WHERE (tab.dataset_id IN (SELECT dataset_id FROM dataset_table WHERE task_id IN (SELECT task_id FROM task_table WHERE task_id IN (SELECT task_id FROM task_table WHERE task_name = 'stroop' OR task_name = 'flanker'))))"
-
-The function `combine_sql_queries()` handles multiple arguments and combines them based on `argument_relation`, which indicated which arguments should be combined with an AND / OR operator. Applied to the argument list created in the example above, with only AND operators being used and the target variables being `c("rt", "accuracy")` the output looks as follows: 
-
-```{r}
-combine_sql_queries(
-  arguments = arguments, 
-  argument_sequence = get_argument_sequence(arguments, argument_relation = "and"), 
-  path_list = compute_fastest_way_to_table(conn, target_table = "observation_table"),
-  requested_vars = c("rt", "accuarcy")
-)
-```
-> "SELECT rt, accuarcy FROM observation_table AS tab WHERE (tab.dataset_id IN (SELECT dataset_id FROM dataset_table WHERE dataset_id IN (SELECT dataset_id FROM dataset_table WHERE n_participants > 200))) AND (tab.dataset_id IN (SELECT dataset_id FROM dataset_table WHERE task_id IN (SELECT task_id FROM task_table WHERE task_id IN (SELECT task_id FROM task_table WHERE task_name = 'stroop' OR task_name = 'flanker'))))"
+Poor choice in the `target_table` may lead to unwanted duplications due to joining, but it will never lead to unwanted omission of some variables. To optimally pick a `target_table`, Inspect the variables you are requesting and figure out which tables they are located in. Then select the table with the most largest number of entries as your target.
 
 ### Join Paths
-In order for the user to be able to select variables not present in the observation table, information from other tables must be added to the rows retained after applying the filters. The function `add_join_paths_to_query()` handles this issue. The combined arguments returned by `combine_sql_queries()`, the connection to the database, a vector containing the filter statements, the requested variables and a list of optimal join paths, similar to the list of optimal filter paths is required as inputs to the function. 
+In order for the user to be able to select and filter based on variables not present in the `target_table`, information from other tables must be added to the rows retained after applying the filters. The function `add_join_paths_to_query()` handles this issue. The combined arguments returned by `combine_sql_queries()`, the connection to the database, a vector containing the filter statements, the requested variables and a list of optimal join paths, similar to the list of optimal filter paths is required as inputs to the function. 
 
 The list for optimal join paths is determined by the function `precompute_table_join_paths()` which discovers an optimal path from the table listed first in the SQL-argument to all other tables that contain at least one of the requested variables in the database. The function prefers paths which contain the larger number of forward joins (implemented via LEFT JOIN).  
 
