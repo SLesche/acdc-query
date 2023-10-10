@@ -2,10 +2,11 @@ Package: acdcquery
 Title: Query the Attentional Control Data Collection
 Version: 0.0.0.9
 Authors@R: 
-    person("Sven", "Lesche", , "sven.lesche@psychologie.uni-heidelberg.de", role = c("aut", "cre"))
+    person("Sven", "Lesche", , "sven.lesche@psychologie.uni-heidelberg.de", role = c("aut", "cre", "cph"))
 Description: Interact with the Attentional Control Data Collection (ADCD).
-  Use this package to connect to the database, set filter arguments and query the database.
-License: MIT + file LICENSE
+  Connect to the database via connect_to_db(), set filter arguments via add_argument()
+  and query the database via query_db().
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3

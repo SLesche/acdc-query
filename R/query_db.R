@@ -1,9 +1,9 @@
 #' Query Database
 #'
-#' This function performs targeted queries on a database using specified filtering arguments and returns the query results. 
+#' This function performs targeted queries on a database using specified filtering arguments and returns the query results.
 #' It extracts information about which tables of the database are relevant for the query and then joins these relevant tables to the target table.
 #' The function constructs an SQL query which incorporates both the joining and filtering. This SQL statement is then applied to the database and the resulting dataframe is returned to the user.
-#' 
+#'
 #' @param conn The connection object to an SQLite database.
 #' @param arguments A list of filtering arguments for the query. The list must have only one filter argument per list-entry.
 #' @param target_vars A character vector specifying the variables to be included in the query results.
@@ -11,7 +11,7 @@
 #' @param target_table The target table in the database for querying.
 #' @param argument_relation A character string specifying the relation between filtering arguments ("and" or "or" or a numerical vector with the same length as the number of arguments).
 #'
-#' @return The query results as a data frame.
+#' @return A data frame containing the query results.
 #' @import DBI
 #' @export
 #'

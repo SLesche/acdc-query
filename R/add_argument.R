@@ -1,6 +1,6 @@
 #' Add a filter argument to a list
 #'
-#' This function adds an argument to a list containing filter arguments later used to query databases. 
+#' This function adds an argument to a list containing filter arguments later used to query databases.
 #' The user can either specify the variable on which to filter on and the operator and value used in the filter or specify an SQL query manually.
 #' When supplying only variable, operator and value, a SQL query will be constructed for the user and added as the next object to a list.
 #'
@@ -11,16 +11,16 @@
 #' @param values The values to be used in the argument.
 #' @param statement The manual argument select statement to be used.
 #'
-#' @return The updated list with the added argument.
+#' @return A list object with the new argument added.
 #' @export
-#' @examples 
+#' @examples
 #' conn <- connect_to_db(":memory:")
 #'
 #' DBI::dbWriteTable(conn, "mtcars", mtcars)
-#' 
+#'
 #' # Initializing argument list
 #' arguments = list()
-#' 
+#'
 #' # Using "equal" operator
 #' arguments = add_argument(
 #'  list = arguments,
@@ -29,7 +29,7 @@
 #'  operator = "equal",
 #'  values = c(4, 6)
 #' )
-#' 
+#'
 #' # Using "greater" operator
 #' arguments = add_argument(
 #'  list = arguments,
@@ -38,7 +38,7 @@
 #'  operator = "greater",
 #'  values = 2
 #' )
-#' 
+#'
 #' # Using "between" operator
 #' arguments = add_argument(
 #'  list = arguments,
@@ -47,7 +47,7 @@
 #'  operator = "between",
 #'  values = c(2, 8)
 #' )
-#' 
+#'
 #' # Manully constructing a filter statement
 #' manual_arguments = add_argument(
 #'  list = arguments,
