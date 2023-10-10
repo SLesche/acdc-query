@@ -2,7 +2,7 @@ Package: acdcquery
 Title: Query the Attentional Control Data Collection
 Version: 1.0.0
 Authors@R: 
-    person("Sven", "Lesche", "sven.lesche@psychologie.uni-heidelberg.de", role = c("aut", "cre"))
+    person("Sven", "Lesche", , "sven.lesche@psychologie.uni-heidelberg.de", role = c("aut", "cre"))
 Description: Access ACDC.
 License: MIT + file LICENSE
 Encoding: UTF-8

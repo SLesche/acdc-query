@@ -6,7 +6,6 @@
 \usage{
 add_join_paths_to_query(
   conn,
-  argument,
   filter_statements,
   join_path_list,
   argument_sequence,
@@ -15,8 +14,6 @@ add_join_paths_to_query(
 }
 \arguments{
 \item{conn}{The connection object or database connection string.}
-
-\item{argument}{The base argument that will be used to build the query.}
 
 \item{filter_statements}{The SQL-Filter statements extracted from the filter arguments list via 'get_filter_statement()'.}
 

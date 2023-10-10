@@ -5,7 +5,6 @@
 #' incorporating requested variables and filter conditions as needed.
 #'
 #' @param conn The connection object or database connection string.
-#' @param argument The base argument that will be used to build the query.
 #' @param filter_statements The SQL-Filter statements extracted from the filter arguments list via 'get_filter_statement()'.
 #' @param join_path_list A list representing the join path. Each element of the list should be a data frame
 #'   describing a step in the join path with columns: "table_to_join", "method", and "common_var".
@@ -15,9 +14,8 @@
 #'
 #' @return A SQL query string that represents the joined tables and requested variables.
 #' @import DBI
-add_join_paths_to_query <- function(conn, argument, filter_statements, join_path_list, argument_sequence, requested_vars = NULL){
-  base_argument = argument
-  starting_table = base::regmatches(base_argument, base::gregexpr("[a-z]+_table", base_argument))[[1]][1]
+add_join_paths_to_query <- function(conn, filter_statements, join_path_list, argument_sequence, requested_vars = NULL){
+  starting_table = join_path_list[[1]]$table[1]
 
   starting_table_id = c()
 

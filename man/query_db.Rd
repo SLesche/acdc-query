@@ -7,10 +7,9 @@
 query_db(
   conn,
   arguments,
-  target_vars = NULL,
+  target_vars = "default",
   argument_relation = "and",
-  target_table = "observation_table",
-  full_db = TRUE
+  target_table = "observation_table"
 )
 }
 \arguments{
@@ -23,8 +22,6 @@ query_db(
 \item{argument_relation}{A character string specifying the relation between filtering arguments ("and" or "or" or a numerical vector with the same length as the number of arguments).}
 
 \item{target_table}{The target table in the database for querying.}
-
-\item{full_db}{A logical value indicating whether target variables are located only in one table, or distributed among multiple tables in the database.}
 }
 \value{
 The query results as a data frame.
@@ -64,7 +61,6 @@ query_results = query_db(
  arguments = arguments,
  target_vars = c("mtcars_id", "plant_id", "cyl", "weight"),
  argument_relation = "and",
- target_table = "plant_table",
- full_db = TRUE
+ target_table = "plant_table"
 )
 }
