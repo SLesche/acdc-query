@@ -15,7 +15,7 @@ query_db(
 \arguments{
 \item{conn}{The connection object to an SQLite database.}
 
-\item{arguments}{A list of filtering arguments for the query.}
+\item{arguments}{A list of filtering arguments for the query. The list must have only one filter argument per list-entry.}
 
 \item{target_vars}{A character vector specifying the variables to be included in the query results.}
 
@@ -28,6 +28,8 @@ The query results as a data frame.
 }
 \description{
 This function performs targeted queries on a database using specified filtering arguments and returns the query results.
+It extracts information about which tables of the database are relevant for the query and then joins these relevant tables to the target table.
+The function constructs an SQL query which incorporates both the joining and filtering. This SQL statement is then applied to the database and the resulting dataframe is returned to the user.
 }
 \examples{
 conn <- connect_to_db(":memory:")

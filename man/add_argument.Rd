@@ -32,7 +32,10 @@ conn <- connect_to_db(":memory:")
 
 DBI::dbWriteTable(conn, "mtcars", mtcars)
 
+# Initializing argument list
 arguments = list()
+
+# Using "equal" operator
 arguments = add_argument(
  list = arguments,
  conn = conn,
@@ -41,6 +44,25 @@ arguments = add_argument(
  values = c(4, 6)
 )
 
+# Using "greater" operator
+arguments = add_argument(
+ list = arguments,
+ conn = conn,
+ variable = "cyl",
+ operator = "greater",
+ values = 2
+)
+
+# Using "between" operator
+arguments = add_argument(
+ list = arguments,
+ conn = conn,
+ variable = "cyl",
+ operator = "between",
+ values = c(2, 8)
+)
+
+# Manully constructing a filter statement
 manual_arguments = add_argument(
  list = arguments,
  conn = conn,
