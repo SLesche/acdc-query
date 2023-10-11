@@ -28,9 +28,8 @@ The user can either specify the variable on which to filter on and the operator 
 When supplying only variable, operator and value, a SQL query will be constructed for the user and added as the next object to a list.
 }
 \examples{
-conn <- connect_to_db(":memory:")
-
-DBI::dbWriteTable(conn, "mtcars", mtcars)
+db_file <- base::system.file("extdata", "acdc.db", package = "acdcquery")
+conn <- connect_to_db(db_file)
 
 # Initializing argument list
 arguments = list()
@@ -39,33 +38,33 @@ arguments = list()
 arguments = add_argument(
  list = arguments,
  conn = conn,
- variable = "cyl",
+ variable = "task_name",
  operator = "equal",
- values = c(4, 6)
+ values = c("stroop", "flanker")
 )
 
 # Using "greater" operator
 arguments = add_argument(
  list = arguments,
  conn = conn,
- variable = "cyl",
+ variable = "n_participants",
  operator = "greater",
- values = 2
+ values = 100
 )
 
 # Using "between" operator
 arguments = add_argument(
  list = arguments,
  conn = conn,
- variable = "cyl",
+ variable = "percentage_congruent",
  operator = "between",
- values = c(2, 8)
+ values = c(0.2, 0.4)
 )
 
 # Manully constructing a filter statement
 manual_arguments = add_argument(
  list = arguments,
  conn = conn,
- statement = "SELECT carb FROM mtcars WHERE cyl = 4 OR cyl = 6)"
+ statement = "SELECT condition_id FROM condition_table WHERE n_obs > 100)"
 )
 }

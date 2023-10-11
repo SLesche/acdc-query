@@ -32,52 +32,37 @@ It extracts information about which tables of the database are relevant for the 
 The function constructs an SQL query which incorporates both the joining and filtering. This SQL statement is then applied to the database and the resulting dataframe is returned to the user.
 }
 \examples{
-conn <- connect_to_db(":memory:")
+db_file <- base::system.file("extdata", "acdc.db", package = "acdcquery")
+conn <- connect_to_db(db_file)
 
-mtcars$mtcars_id = 1:nrow(mtcars)
-
-example_data = data.frame(
-  example_id = 1:150,
-  mtcars_id = rep(1:30, each = 5),
-  example_value = runif(150, 0, 1)
-)
-
-DBI::dbWriteTable(conn, "mtcars_table", mtcars)
-DBI::dbWriteTable(conn, "example_table", example_data)
-
+# Initializing argument list
 arguments = list()
-arguments = add_argument(
- list = arguments,
- conn = conn,
- variable = "cyl",
- operator = "equal",
- values = c(4, 6)
-)
 
 arguments = add_argument(
  list = arguments,
  conn = conn,
- variable = "example_value",
- operator = "greater",
- values = 0.4
+ variable = "task_name",
+ operator = "equal",
+ values = c("stroop", "flanker")
+)
+arguments = add_argument(
+ list = arguments,
+ conn = conn,
+ variable = "dataset_id",
+ operator = "equal",
+ values = 1:10
 )
 
 # Return specified variables
-target_vars = c("mtcars_id", "example_id", "cyl")
-query_results = query_db(
- conn = conn,
- arguments = arguments,
- target_vars = target_vars,
- target_table = "example_table",
- argument_relation = "and"
-)
+target_vars = c("dataset_id", "task_name", "n_participants", "mean_dataset_rt")
 
 # Return all variables in mtcars_table and example_value from example_table
 query_results = query_db(
  conn = conn,
  arguments = arguments,
- target_vars = c("default", "example_value"),
- target_table = "mtcars_table",
+ target_vars = c("default", target_vars),
+ target_table = "dataset_table",
  argument_relation = "and"
 )
+
 }
