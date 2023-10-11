@@ -8,7 +8,7 @@ To query the database, specify the connection to the database (obtained via `con
 
 ## Working example
 ```
-# devtools::install_github("SLesche/acdcquery")
+# devtools::install_github("SLesche/acdc-query")
 library(acdcquery)
 db_file <- base::system.file("extdata", "acdc.db", package = "acdcquery")
 conn <- connect_to_db(db_file)
