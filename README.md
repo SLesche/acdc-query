@@ -1,12 +1,8 @@
 # acdcquery: Query the Attentional Control Data Collection
-## Installation
-You can install this package via `devtools::install_github("SLesche/acdc-query")`. You may need to update imported packages.
-
-## Dependencies
-This package is designed for use in R 4.2.2. It imports the packages DBI and RSQLite.
+Interact with the Attentional Control Data Collection (ACDC). Connect to the database using `connect_to_db()`, build query statements using `add_argument()` and query the database using `query_db()`.
 
 ## Use
-In order to interact with the database, you must first [download](https://github.com/jstbcs/acdc-database/raw/main/acdc.db) it from its [parent repo](https://github.com/jstbcs/acdc-database/tree/main).
+A version of the database is included in the package. You can create a connection to it using `conn <- connect_to_db(base::system.file("extdata", "acdc.db", package = "acdcquery"))`.  In order to get the latest version of the database, you can download it from its [parent repo](https://github.com/jstbcs/acdc-database/tree/main).
 
 To query the database, specify the connection to the database (obtained via `conn <- connect_to_db("path/to/db.db")`), a list of filter arguments (obtained by using `add_argument()`), and a vector containing the names of the variables you want returned.
 
@@ -14,7 +10,11 @@ To query the database, specify the connection to the database (obtained via `con
 ```
 # devtools::install_github("SLesche/acdcquery")
 library(acdcquery)
-conn <- connect_to_db("path/to/db.db")
+db_file <- base::system.file("extdata", "acdc.db", package = "acdcquery")
+conn <- connect_to_db(db_file)
+
+# You may also download the latest version of the database and connect to that
+# conn <- connect_to_db("path/to/db.db")
 
 arguments <- list() 
 arguments <- add_argument(
@@ -36,6 +36,12 @@ requested_vars <- c("rt", "accuracy", "n_participants")
 
 df <- query_db(conn, arguments, requested_vars)
 ```
+
+## Installation
+You can install this package via `devtools::install_github("SLesche/acdc-query")`. You may need to update imported packages.
+
+## Dependencies
+This package is designed for use in R 4.2.2. It imports the packages DBI and RSQLite.
 
 ## Documentation
 ### General
