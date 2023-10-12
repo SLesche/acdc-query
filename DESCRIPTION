@@ -1,6 +1,6 @@
 Package: acdcquery
 Title: Query the Attentional Control Data Collection
-Version: 0.0.0.9
+Version: 1.0.0
 Authors@R: 
     person("Sven", "Lesche", , "sven.lesche@psychologie.uni-heidelberg.de", role = c("aut", "cre", "cph"))
 Description: Interact with the Attentional Control Data Collection (ADCD).
