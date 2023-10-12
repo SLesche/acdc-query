@@ -40,7 +40,7 @@
 #' # Return specified variables
 #' target_vars = c("dataset_id", "task_name", "n_participants", "mean_dataset_rt")
 #'
-#' # Return all variables in mtcars_table and example_value from example_table
+#' # Return all variables in dataset_table and the target variables
 #' query_results = query_db(
 #'  conn = conn,
 #'  arguments = arguments,
