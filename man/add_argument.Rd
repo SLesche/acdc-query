@@ -13,19 +13,19 @@ add_argument(list, conn, variable, operator, values, statement = NULL)
 
 \item{variable}{The variable name to be used in the argument.}
 
-\item{operator}{The operator to be used in the argument (e.g., "greater", "between", "equal", "less").}
+\item{operator}{The operator to be used in the argument (i.e., "greater", "between", "equal", "less").}
 
 \item{values}{The values to be used in the argument.}
 
-\item{statement}{The manual argument select statement to be used.}
+\item{statement}{The manual SQL query to be used.}
 }
 \value{
-A list object with the new argument added.
+A list object with the new argument (SQL query) added.
 }
 \description{
-This function adds an argument to a list containing filter arguments later used to query databases.
-The user can either specify the variable on which to filter on and the operator and value used in the filter or specify an SQL query manually.
-When supplying only variable, operator and value, a SQL query will be constructed for the user and added as the next object to a list.
+This function adds an argument to a list containing filter arguments later used to select data from the database.
+When supplying the variable used for filtering, the operator and the value, an SQL query will be constructed for the user and added as the next object to the list of arguments.#' When supplying only variable, operator and value, a SQL query will be constructed for the user and added as the next object to a list.
+Alternatively, the user may specify an SQL query manually.
 }
 \examples{
 db_file <- base::system.file("extdata", "acdc.db", package = "acdcquery")

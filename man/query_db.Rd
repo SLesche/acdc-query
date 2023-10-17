@@ -21,15 +21,15 @@ query_db(
 
 \item{target_table}{The target table in the database for querying.}
 
-\item{argument_relation}{A character string specifying the relation between filtering arguments ("and" or "or" or a numerical vector with the same length as the number of arguments).}
+\item{argument_relation}{A character string specifying the relation between filtering arguments ("and" or "or" or a numerical vector with the same length as the number of arguments). Arguments with equal numbers in their index are joined using the OR operator, others using AND. To represent (A OR B) AND C AND D use the vector c(1, 1, 2, 3).}
 }
 \value{
 A data frame containing the query results.
 }
 \description{
-This function performs targeted queries on a database using specified filtering arguments and returns the query results.
+This function performs targeted queries on an SQLite database using specified filtering arguments and returns the query results.
 It extracts information about which tables of the database are relevant for the query and then joins these relevant tables to the target table.
-The function constructs an SQL query which incorporates both the joining and filtering. This SQL statement is then applied to the database and the resulting dataframe is returned to the user.
+The function constructs an SQL query which incorporates both the joining and filtering target variables. This SQL statement is then applied to the database and the resulting dataframe is returned to the user.
 }
 \examples{
 db_file <- base::system.file("extdata", "acdc.db", package = "acdcquery")

@@ -2,7 +2,7 @@
 % Please edit documentation in R/connect_to_db.R
 \name{connect_to_db}
 \alias{connect_to_db}
-\title{Connect to a SQLite database}
+\title{Connect to an SQLite database}
 \usage{
 connect_to_db(path_to_db)
 }
@@ -13,7 +13,7 @@ connect_to_db(path_to_db)
 A database connection object.
 }
 \description{
-This function establishes a connection to a SQLite database file located at the specified path using the DBI and RSQLite packages.
+This function establishes a connection to an SQLite database file located at the specified path using the DBI and RSQLite packages.
 }
 \examples{
 # Connect to a SQLite database file
@@ -23,5 +23,8 @@ conn <- connect_to_db(db_file)
 # When connecting to a specific file, like the downloaded ACDC-Database
 # just use the path to the database
 \dontrun{conn <- connect_to_db("path/to/database.db")}
+
+# Want the most recent version of the database?
+# Download it at https://github.com/jstbcs/acdc-database/blob/main/acdc.db
 
 }

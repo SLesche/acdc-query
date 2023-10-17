@@ -1,17 +1,17 @@
 #' Add a filter argument to a list
 #'
-#' This function adds an argument to a list containing filter arguments later used to query databases.
-#' The user can either specify the variable on which to filter on and the operator and value used in the filter or specify an SQL query manually.
-#' When supplying only variable, operator and value, a SQL query will be constructed for the user and added as the next object to a list.
+#' This function adds an argument to a list containing filter arguments later used to select data from the database.
+#' When supplying the variable used for filtering, the operator and the value, an SQL query will be constructed for the user and added as the next object to the list of arguments.#' When supplying only variable, operator and value, a SQL query will be constructed for the user and added as the next object to a list.
+#' Alternatively, the user may specify an SQL query manually.
 #'
 #' @param list The list to which the argument will be added.
 #' @param conn The connection object or database connection string.
 #' @param variable The variable name to be used in the argument.
-#' @param operator The operator to be used in the argument (e.g., "greater", "between", "equal", "less").
+#' @param operator The operator to be used in the argument (i.e., "greater", "between", "equal", "less").
 #' @param values The values to be used in the argument.
-#' @param statement The manual argument select statement to be used.
+#' @param statement The manual SQL query to be used.
 #'
-#' @return A list object with the new argument added.
+#' @return A list object with the new argument (SQL query) added.
 #' @export
 #' @examples
 #' db_file <- base::system.file("extdata", "acdc.db", package = "acdcquery")

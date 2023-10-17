@@ -1,6 +1,6 @@
-#' Connect to a SQLite database
+#' Connect to an SQLite database
 #'
-#' This function establishes a connection to a SQLite database file located at the specified path using the DBI and RSQLite packages.
+#' This function establishes a connection to an SQLite database file located at the specified path using the DBI and RSQLite packages.
 #'
 #' @param path_to_db The path to the SQLite database file.
 #'
@@ -15,6 +15,9 @@
 #' # When connecting to a specific file, like the downloaded ACDC-Database
 #' # just use the path to the database
 #' \dontrun{conn <- connect_to_db("path/to/database.db")}
+#'
+#' # Want the most recent version of the database?
+#' # Download it at https://github.com/jstbcs/acdc-database/blob/main/acdc.db
 #'
 #' @import DBI
 #' @import RSQLite
