@@ -29,7 +29,7 @@ If \code{NULL}, all variables are selected.}
 A SQL query string that represents the joined tables and requested variables.
 }
 \description{
-This function generates a SQL query based on a specified connection, argument, and join path list.
+This function generates an SQL query based on a specified connection, argument, and join path list.
 It constructs a query that performs joins on multiple tables according to the provided join path,
 incorporating requested variables and filter conditions as needed.
 }

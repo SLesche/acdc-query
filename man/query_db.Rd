@@ -17,7 +17,7 @@ query_db(
 
 \item{arguments}{A list of filtering arguments for the query. The list must have only one filter argument per list-entry.}
 
-\item{target_vars}{A character vector specifying the variables to be included in the query results.}
+\item{target_vars}{A character vector specifying the variables to be included in the query results. "default" includes all variables in the target_table}
 
 \item{target_table}{The target table in the database for querying.}
 
@@ -26,10 +26,11 @@ query_db(
 \value{
 A data frame containing the query results.
 }
+
 \description{
-This function performs targeted queries on a database using specified filtering arguments and returns the query results.
-It extracts information about which tables of the database are relevant for the query and then joins these relevant tables to the target table.
-The function constructs an SQL query which incorporates both the joining and filtering. This SQL statement is then applied to the database and the resulting dataframe is returned to the user.
+This function performs targeted queries on an SQLite database using specified filtering arguments and returns the query results.
+It extracts information about which tables of the database are relevant for the query and then joins these tables to the target table.
+The function constructs an SQL query which incorporates both joining and filtering target variables. This SQL statement is then applied to the database and the resulting dataframe is returned to the user.
 }
 \examples{
 db_file <- base::system.file("extdata", "acdc.db", package = "acdcquery")
