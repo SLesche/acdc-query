@@ -4,7 +4,7 @@ Version: 1.0.0
 Authors@R: c(
     person(given = "Sven", family = "Lesche", email = "sven.lesche@psychologie.uni-heidelberg.de", role = c("aut", "cre", "cph")),
     person(given = "Julia M.", family = "Haaf", email = "j.m.haaf@uva.nl", role = c("ctb", "ths")),
-    person(given = "Madlen", family = "Hoffstadt", email = "madlen@something.something", role = c("ctb"))
+    person(given = "Madlen", family = "Hoffstadt", email = "madlenfeehoffstadt@gmail.com", role = c("ctb"))
     )
 Description: Interact with the Attentional Control Data Collection (ADCD).
   Connect to the database via connect_to_db(), set filter arguments via add_argument()
