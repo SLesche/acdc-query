@@ -1,6 +1,6 @@
 Package: acdcquery
 Title: Query the Attentional Control Data Collection
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
     person(given = "Sven", family = "Lesche", email = "sven.lesche@psychologie.uni-heidelberg.de", role = c("aut", "cre", "cph")),
     person(given = "Julia M.", family = "Haaf", email = "j.m.haaf@uva.nl", role = c("ctb", "ths")),
