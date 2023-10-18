@@ -6,7 +6,7 @@ Authors@R: c(
     person(given = "Julia M.", family = "Haaf", email = "j.m.haaf@uva.nl", role = c("ctb", "ths")),
     person(given = "Madlen", family = "Hoffstadt", email = "madlenfeehoffstadt@gmail.com", role = c("ctb"))
     )
-Description: Interact with the Attentional Control Data Collection (ADCD).
+Description: Interact with the Attentional Control Data Collection (ACDC).
   Connect to the database via connect_to_db(), set filter arguments via add_argument()
   and query the database via query_db().
 License: GPL (>= 3)
