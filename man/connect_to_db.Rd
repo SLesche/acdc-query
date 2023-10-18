@@ -16,9 +16,8 @@ A database connection object.
 This function establishes a connection to an SQLite database file located at the specified path using the DBI and RSQLite packages.
 }
 \examples{
-# Connect to a SQLite database file
-db_file <- base::system.file("extdata", "acdc.db", package = "acdcquery")
-conn <- connect_to_db(db_file)
+# Connect to a SQLite database file in memory
+conn <- connect_to_db(":memory:")
 
 # When connecting to a specific file, like the downloaded ACDC-Database
 # just use the path to the database
