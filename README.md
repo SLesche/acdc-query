@@ -8,7 +8,9 @@ To query the database, specify the connection to the database (obtained via `con
 
 ## Working example
 ```
-# devtools::install_github("SLesche/acdc-query")
+# install.packages("acdcquery") # for the latest stable CRAN release
+# devtools::install_github("SLesche/acdc-query") # for the latest version
+
 library(acdcquery)
 # download the latest version of the database and connect to that
 db_file <- "path/to/db"
