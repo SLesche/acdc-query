@@ -125,7 +125,7 @@ add_join_paths_to_query <- function(conn, filter_statements, join_path_list, arg
     } else {
       sql_query = paste0(
         sql_query,
-        " RIGHT JOIN ",
+        " FULL JOIN ",
         "(SELECT ",
         relevant_field_names,
         " FROM ",

@@ -107,18 +107,8 @@ query_db <- function(conn, arguments, target_vars = "default", target_table = "o
   }
 
   for (target_var in target_vars){
-    # IF default was used, do not include secondary keys as relevant tables
-    if (FALSE){
-      relevant_tables = c(relevant_tables, target_table)
-
-      if (!target_var %in% target_table_vars){
-        table = find_relevant_tables(conn, target_var, col_names, TRUE)
-        relevant_tables = c(relevant_tables, table)
-      }
-    } else {
-      table = find_relevant_tables(conn, target_var, col_names, TRUE)
-      relevant_tables = c(relevant_tables, table)
-    }
+    table = find_relevant_tables(conn, target_var, col_names, TRUE)
+    relevant_tables = c(relevant_tables, table)
   }
 
   relevant_tables = unique(relevant_tables)
