@@ -78,13 +78,25 @@ add_join_paths_to_query <- function(conn, filter_statements, join_path_list, arg
     for (icommon in seq_along(common_vars)){
       current_common_var = common_vars[icommon]
       new_join_statement = paste0(
+        "((",
         introduction_table$join_table[introduction_table$newly_discovered_ids == current_common_var], # here I want to figure out where the relevant id is introduced (by which join step)
         ".",
         current_common_var,
         " = ",
         paste0("dtjoin", i),
         ".",
-        current_common_var
+        current_common_var,
+        ") OR (",
+        introduction_table$join_table[introduction_table$newly_discovered_ids == current_common_var], # here I want to figure out where the relevant id is introduced (by which join step)
+        ".",
+        current_common_var,
+        " IS NULL ",
+        " AND ",
+        paste0("dtjoin", i),
+        ".",
+        current_common_var,
+        " IS NULL ",
+        "))"
       )
       if (icommon == 1){
         join_var_statement = new_join_statement
