@@ -29,6 +29,7 @@ precompute_table_join_paths <- function(conn, input_table = NULL, relevant_table
     table_info[[i]]$ids = table_info[[i]]$fields[base::grepl("_id$", table_info[[i]]$fields)]
   }
 
+  # Get information, forward joins available
   for (i in seq_along(table_info)){
     # Check forward mentions
       # so which table ids are mentioned in this table
@@ -43,6 +44,7 @@ precompute_table_join_paths <- function(conn, input_table = NULL, relevant_table
     table_info[[i]]$forward = table_info[[i]]$forward[-bad_rows, ]
   }
 
+  # Get information, backward joins available
   for (i in seq_along(table_info)){
     other_ids = subset(seq_along(table_info), seq_along(table_info) != i)
     backward_mention_in = c()
@@ -59,6 +61,7 @@ precompute_table_join_paths <- function(conn, input_table = NULL, relevant_table
     table_info[[i]]$backward$ids = return_id_name_from_table(table_info[[i]]$backward$table)
   }
 
+  # Get index of starting table
   input_table_index = c()
   for (i in seq_along(table_info)){
     if (!is.null(input_table)){
@@ -128,6 +131,9 @@ precompute_table_join_paths <- function(conn, input_table = NULL, relevant_table
 
       forward_tables = table_info[[index_best_explored_table]]$forward$table
       non_explored_forward = forward_tables[!forward_tables %in% explored_tables]
+
+      # Decrease the priority of the following tables as forward links
+      # but only if they are NOT in relevant tables
       if ((!"observation_table" %in% relevant_tables) & explored_tables[1] != "observation_table"){
         non_explored_forward = non_explored_forward[non_explored_forward != "observation_table"]
       }
@@ -136,9 +142,9 @@ precompute_table_join_paths <- function(conn, input_table = NULL, relevant_table
         non_explored_forward = non_explored_forward[non_explored_forward != "statement_table"]
       }
 
-      if ((!"statementset_table" %in% relevant_tables) & explored_tables[1] != "statementset_table"){
-        non_explored_forward = non_explored_forward[non_explored_forward != "statementset_table"]
-      }
+      # if ((!"statementset_table" %in% relevant_tables) & explored_tables[1] != "statementset_table"){
+      #   non_explored_forward = non_explored_forward[non_explored_forward != "statementset_table"]
+      # }
 
       if (length(non_explored_forward) > 0){
         for (table in non_explored_forward){
@@ -167,7 +173,15 @@ precompute_table_join_paths <- function(conn, input_table = NULL, relevant_table
           }
 
           if (length(non_explored_backward) > 0){
-            backward_table = non_explored_backward[1]
+            # Check if any of the non-explored backward tables are in relevant_tables
+            relevant_backward_tables = non_explored_backward[non_explored_backward %in% relevant_tables]
+
+            if (length(relevant_backward_tables) > 0){
+              backward_table = relevant_backward_tables[1]  # Prioritize relevant table
+            } else {
+              backward_table = non_explored_backward[1]  # Default to first if no relevant table found
+            }
+
             explored_tables = c(explored_tables, backward_table)
             methods = c(methods, "backward")
             common_var = c(common_var, return_id_name_from_table(last_explored_table))
