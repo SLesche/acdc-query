@@ -55,7 +55,7 @@ add_join_paths_to_query <- function(conn, filter_statements, join_path_list, arg
   }
 
   sql_base_query = paste0(
-    "SELECT ", selected_vars, " FROM ", starting_table, " AS tab"
+    "SELECT DISTINCT ", selected_vars, " FROM ", starting_table, " AS tab"
   )
   sql_query = sql_base_query
 
