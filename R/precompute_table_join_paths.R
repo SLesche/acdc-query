@@ -168,9 +168,9 @@ precompute_table_join_paths <- function(conn, input_table = NULL, relevant_table
 
           backward_tables = table_info[[index_last_explored_table]]$backward$table
           non_explored_backward = backward_tables[!backward_tables %in% explored_tables]
-          if (!"observation_table" %in% relevant_tables){
-            non_explored_backward = non_explored_backward[non_explored_backward != "observation_table"]
-          }
+          # if (!"observation_table" %in% relevant_tables){
+          #   non_explored_backward = non_explored_backward[non_explored_backward != "observation_table"]
+          # }
 
           if (length(non_explored_backward) > 0){
             # Check if any of the non-explored backward tables are in relevant_tables
