@@ -30,7 +30,8 @@ add_join_paths_to_query <- function(conn, filter_statements, join_path_list, arg
 
   path_dataframe = join_path_list[[starting_table_id]]$path
 
-  if (nrow(path_dataframe) > 1){
+  single_row_only = ifelse(nrow(path_dataframe) == 1, 1, 0)
+  if (!single_row_only){
     path_dataframe = path_dataframe[-1, ]
   }
 
@@ -59,82 +60,83 @@ add_join_paths_to_query <- function(conn, filter_statements, join_path_list, arg
   )
   sql_query = sql_base_query
 
+  if (!single_row_only){
+    for (i in 1:nrow(path_dataframe)){
+      current_table_to_join = path_dataframe$table_to_join[i]
+      current_method = path_dataframe$method[i]
+      current_common_var = path_dataframe$common_var[i]
 
-  for (i in 1:nrow(path_dataframe)){
-    current_table_to_join = path_dataframe$table_to_join[i]
-    current_method = path_dataframe$method[i]
-    current_common_var = path_dataframe$common_var[i]
+      # I only want to add new id variables to the joins, not any that are in there currently
+      upcoming_important_ids = path_dataframe$common_var[i:nrow(path_dataframe)]
+      already_introduced_ids = introduction_table[which(introduction_table$discovery_id < (i + 1)), "newly_discovered_ids"]
+      upcoming_important_ids = upcoming_important_ids[(!upcoming_important_ids %in% already_introduced_ids) | (upcoming_important_ids %in% current_common_var)]
 
-    # I only want to add new id variables to the joins, not any that are in there currently
-    upcoming_important_ids = path_dataframe$common_var[i:nrow(path_dataframe)]
-    already_introduced_ids = introduction_table[which(introduction_table$discovery_id < (i + 1)), "newly_discovered_ids"]
-    upcoming_important_ids = upcoming_important_ids[(!upcoming_important_ids %in% already_introduced_ids) | (upcoming_important_ids %in% current_common_var)]
+      relevant_field_names = DBI::dbListFields(conn, current_table_to_join)
+      relevant_field_names = paste(relevant_field_names, collapse = ", ")
 
-    relevant_field_names = DBI::dbListFields(conn, current_table_to_join)
-    relevant_field_names = paste(relevant_field_names, collapse = ", ")
-
-    common_vars = strsplit(path_dataframe$all_common_vars[i], ",")[[1]]
-    join_var_statement = character()
-    for (icommon in seq_along(common_vars)){
-      current_common_var = common_vars[icommon]
-      new_join_statement = paste0(
-        "((",
-        introduction_table$join_table[introduction_table$newly_discovered_ids == current_common_var], # here I want to figure out where the relevant id is introduced (by which join step)
-        ".",
-        current_common_var,
-        " = ",
-        paste0("dtjoin", i),
-        ".",
-        current_common_var,
-        ") OR (",
-        introduction_table$join_table[introduction_table$newly_discovered_ids == current_common_var], # here I want to figure out where the relevant id is introduced (by which join step)
-        ".",
-        current_common_var,
-        " IS NULL ",
-        " AND ",
-        paste0("dtjoin", i),
-        ".",
-        current_common_var,
-        " IS NULL ",
-        "))"
-      )
-      if (icommon == 1){
-        join_var_statement = new_join_statement
-      } else {
-        join_var_statement = paste0(
-          join_var_statement,
+      common_vars = strsplit(path_dataframe$all_common_vars[i], ",")[[1]]
+      join_var_statement = character()
+      for (icommon in seq_along(common_vars)){
+        current_common_var = common_vars[icommon]
+        new_join_statement = paste0(
+          "((",
+          introduction_table$join_table[introduction_table$newly_discovered_ids == current_common_var], # here I want to figure out where the relevant id is introduced (by which join step)
+          ".",
+          current_common_var,
+          " = ",
+          paste0("dtjoin", i),
+          ".",
+          current_common_var,
+          ") OR (",
+          introduction_table$join_table[introduction_table$newly_discovered_ids == current_common_var], # here I want to figure out where the relevant id is introduced (by which join step)
+          ".",
+          current_common_var,
+          " IS NULL ",
           " AND ",
-          new_join_statement
+          paste0("dtjoin", i),
+          ".",
+          current_common_var,
+          " IS NULL ",
+          "))"
+        )
+        if (icommon == 1){
+          join_var_statement = new_join_statement
+        } else {
+          join_var_statement = paste0(
+            join_var_statement,
+            " AND ",
+            new_join_statement
+          )
+        }
+      }
+
+      if (current_method == "forward"){
+        sql_query = paste0(
+          sql_query,
+          " LEFT JOIN ",
+          "(SELECT ",
+          relevant_field_names,
+          " FROM ",
+          current_table_to_join,
+          ")",
+          " AS ", paste0("dtjoin", i),
+          " ON ",
+          join_var_statement
+        )
+      } else {
+        sql_query = paste0(
+          sql_query,
+          " FULL JOIN ",
+          "(SELECT ",
+          relevant_field_names,
+          " FROM ",
+          current_table_to_join,
+          ")",
+          " AS ", paste0("dtjoin", i),
+          " ON ",
+          join_var_statement
         )
       }
-    }
-
-    if (current_method == "forward"){
-      sql_query = paste0(
-        sql_query,
-        " LEFT JOIN ",
-        "(SELECT ",
-        relevant_field_names,
-        " FROM ",
-        current_table_to_join,
-        ")",
-        " AS ", paste0("dtjoin", i),
-        " ON ",
-        join_var_statement
-      )
-    } else {
-      sql_query = paste0(
-        sql_query,
-        " FULL JOIN ",
-        "(SELECT ",
-        relevant_field_names,
-        " FROM ",
-        current_table_to_join,
-        ")",
-        " AS ", paste0("dtjoin", i),
-        " ON ",
-        join_var_statement
-      )
     }
   }
 
