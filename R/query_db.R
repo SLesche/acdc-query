@@ -126,6 +126,10 @@ query_db <- function(conn, arguments, target_vars = "default", target_table = "o
     requested_vars = target_vars
   )
 
+  if (grepl("observation_table", sql_query)){
+    print("Querying through observation table. Query times may be longer.")
+  }
+
   # Send to db
   data = DBI::dbGetQuery(
     conn,
