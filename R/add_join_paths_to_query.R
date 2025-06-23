@@ -55,9 +55,16 @@ add_join_paths_to_query <- function(conn, filter_statements, join_path_list, arg
     selected_vars = paste(requested_vars, collapse = ", ")
   }
 
-  sql_base_query = paste0(
-    "SELECT DISTINCT ", selected_vars, " FROM ", starting_table, " AS tab"
-  )
+  if (starting_table == "observation_table") {
+    sql_base_query = paste0(
+      "SELECT ", selected_vars, " FROM ", starting_table, " AS tab"
+    )
+  } else {
+    sql_base_query = paste0(
+      "SELECT DISTINCT ", selected_vars, " FROM ", starting_table, " AS tab"
+    )
+  }
+
   sql_query = sql_base_query
 
   if (!single_row_only){
@@ -71,7 +78,9 @@ add_join_paths_to_query <- function(conn, filter_statements, join_path_list, arg
       already_introduced_ids = introduction_table[which(introduction_table$discovery_id < (i + 1)), "newly_discovered_ids"]
       upcoming_important_ids = upcoming_important_ids[(!upcoming_important_ids %in% already_introduced_ids) | (upcoming_important_ids %in% current_common_var)]
 
-      relevant_field_names = DBI::dbListFields(conn, current_table_to_join)
+      table_field_names = DBI::dbListFields(conn, current_table_to_join)
+
+      relevant_field_names = table_field_names[grepl(pattern = "_id$", table_field_names) | table_field_names %in% requested_vars]
       relevant_field_names = paste(relevant_field_names, collapse = ", ")
 
       common_vars = strsplit(path_dataframe$all_common_vars[i], ",")[[1]]
@@ -79,25 +88,25 @@ add_join_paths_to_query <- function(conn, filter_statements, join_path_list, arg
       for (icommon in seq_along(common_vars)){
         current_common_var = common_vars[icommon]
         new_join_statement = paste0(
-          "((",
+          # "((",
           introduction_table$join_table[introduction_table$newly_discovered_ids == current_common_var], # here I want to figure out where the relevant id is introduced (by which join step)
           ".",
           current_common_var,
           " = ",
           paste0("dtjoin", i),
           ".",
-          current_common_var,
-          ") OR (",
-          introduction_table$join_table[introduction_table$newly_discovered_ids == current_common_var], # here I want to figure out where the relevant id is introduced (by which join step)
-          ".",
-          current_common_var,
-          " IS NULL ",
-          " AND ",
-          paste0("dtjoin", i),
-          ".",
-          current_common_var,
-          " IS NULL ",
-          "))"
+          current_common_var
+          # ") OR (",
+          # introduction_table$join_table[introduction_table$newly_discovered_ids == current_common_var], # here I want to figure out where the relevant id is introduced (by which join step)
+          # ".",
+          # current_common_var,
+          # " IS NULL ",
+          # " AND ",
+          # paste0("dtjoin", i),
+          # ".",
+          # current_common_var,
+          # " IS NULL ",
+          # "))"
         )
         if (icommon == 1){
           join_var_statement = new_join_statement
