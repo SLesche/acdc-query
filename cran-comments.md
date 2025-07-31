@@ -1,12 +1,7 @@
-## Resubmission
-This is a resubmission. In this version I have:
-
-* removed inst/extdata/acdc.db as the example database
-
-* changed all relevant example sections to not refer to this file
+## Minor Update
+This is minor update ensuring compatability to a new database format
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 0 notes
 
-* This is a new release.
