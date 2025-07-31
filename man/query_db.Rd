@@ -82,4 +82,5 @@ query_results = query_db(
  target_table = "mtcars_table",
  argument_relation = "and"
 )
+
 }

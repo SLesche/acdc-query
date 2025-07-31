@@ -65,6 +65,7 @@
 #'  target_table = "mtcars_table",
 #'  argument_relation = "and"
 #' )
+#'
 query_db <- function(conn, arguments, target_vars = "default", target_table = "observation_table", argument_relation = "and"){
   # Convert argument_relation into proper numerical vector
   argument_sequence = get_argument_sequence(arguments, argument_relation)
