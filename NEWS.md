@@ -1,3 +1,7 @@
+# acdcquery 1.1.1
+
+* Fixed issues with variables present in filter but not requested
+
 # acdcquery 1.1.0
 
 * Results from `query_db()` now only return distinct entries for all tables except the observation table

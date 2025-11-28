@@ -1,5 +1,5 @@
-## Minor Update
-This is minor update ensuring compatability to a new database format
+## Patch
+This is minor patch fixing issues where variables needed for filtering that are not present in the results will break the query.
 
 ## R CMD check results
 

@@ -11,6 +11,7 @@
 #' @param argument_sequence A numeric vector representing the AND/OR sequence of arguments.
 #' @param requested_vars A character vector specifying the variables to be selected from the final query result.
 #'   If `NULL`, all variables are selected.
+#' @param filter_variables A character vector specifying the variables needed for filtering
 #'
 #' @return A SQL query string that represents the joined tables and requested variables.
 #' @import DBI

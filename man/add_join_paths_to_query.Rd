@@ -9,7 +9,8 @@ add_join_paths_to_query(
   filter_statements,
   join_path_list,
   argument_sequence,
-  requested_vars = NULL
+  requested_vars = NULL,
+  filter_variables = NULL
 )
 }
 \arguments{
@@ -24,6 +25,8 @@ describing a step in the join path with columns: "table_to_join", "method", and 
 
 \item{requested_vars}{A character vector specifying the variables to be selected from the final query result.
 If \code{NULL}, all variables are selected.}
+
+\item{filter_variables}{A character vector specifying the variables needed for filtering}
 }
 \value{
 A SQL query string that represents the joined tables and requested variables.
