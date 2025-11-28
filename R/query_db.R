@@ -124,7 +124,8 @@ query_db <- function(conn, arguments, target_vars = "default", target_table = "o
       relevant_tables = relevant_tables
     ),
     argument_sequence = argument_sequence,
-    requested_vars = target_vars
+    requested_vars = target_vars,
+    filter_variables = filter_variables
   )
 
   if (grepl("observation_table", sql_query)){

@@ -14,7 +14,7 @@
 #'
 #' @return A SQL query string that represents the joined tables and requested variables.
 #' @import DBI
-add_join_paths_to_query <- function(conn, filter_statements, join_path_list, argument_sequence, requested_vars = NULL){
+add_join_paths_to_query <- function(conn, filter_statements, join_path_list, argument_sequence, requested_vars = NULL, filter_variables = NULL){
   starting_table = join_path_list[[1]]$table[1]
 
   starting_table_id = c()
@@ -80,7 +80,7 @@ add_join_paths_to_query <- function(conn, filter_statements, join_path_list, arg
 
       table_field_names = DBI::dbListFields(conn, current_table_to_join)
 
-      relevant_field_names = table_field_names[grepl(pattern = "_id$", table_field_names) | table_field_names %in% requested_vars]
+      relevant_field_names = table_field_names[grepl(pattern = "_id$", table_field_names) | table_field_names %in% c(requested_vars, filter_variables)]
       relevant_field_names = paste(relevant_field_names, collapse = ", ")
 
       common_vars = strsplit(path_dataframe$all_common_vars[i], ",")[[1]]
