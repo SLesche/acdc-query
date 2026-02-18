@@ -14,19 +14,8 @@
 #' @return A list object with the new argument (SQL query) added.
 #' @export
 #' @examples
-#'
-#' conn <- connect_to_db(":memory:")
-#'
-#' mtcars$mtcars_id = 1:nrow(mtcars)
-#'
-#' example_data = data.frame(
-#'   example_id = 1:150,
-#'   mtcars_id = rep(1:30, each = 5),
-#'   example_value = runif(150, 0, 1)
-#' )
-#'
-#' DBI::dbWriteTable(conn, "mtcars_table", mtcars)
-#' DBI::dbWriteTable(conn, "example_table", example_data)
+#' \dontrun{
+#' conn <- connect_to_db("path/to/db")
 #'
 #' # Initializing argument list
 #' arguments = list()
@@ -64,6 +53,7 @@
 #'  conn = conn,
 #'  statement = "SELECT mtcars_id FROM mtcars WHERE cyl = 4 OR cyl = 6)"
 #' )
+#' }
 
 add_argument <- function(list, conn, variable, operator, values, statement = NULL) {
   if (is.null(statement)) {

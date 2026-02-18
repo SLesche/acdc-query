@@ -16,7 +16,7 @@
 #' @return Invisibly returns TRUE if the local database is up to date,
 #'   FALSE if it is outdated (and possibly updated if `update = TRUE`).
 update_database <- function(
-  owner, 
+  owner,
   repo,
   asset_name,
   local_sqlite_path,
@@ -25,7 +25,7 @@ update_database <- function(
   algo = "sha256",
   update = FALSE
 ) {
-  
+
   is_current <- compare_sqlite_to_release(
     owner = owner,
     repo = repo,
@@ -47,7 +47,7 @@ update_database <- function(
         owner = owner,
         repo = repo,
         asset_name = asset_name,
-        dest_file = local_sqlite_path,
+        dest_dir = local_sqlite_path,
         tag = tag,
         token = token
       )
@@ -87,7 +87,7 @@ update_ted <- function(
     token = Sys.getenv("GITHUB_PAT"),
     algo = "sha256"
 ) {
-  
+
   update_database(
     owner = "SLesche",
     repo = "truth-effect-database",
@@ -128,7 +128,7 @@ update_acdc <- function(
     token = Sys.getenv("GITHUB_PAT"),
     algo = "sha256"
 ) {
-  
+
   update_database(
     owner = "jstbcs",
     repo = "acdc-database",

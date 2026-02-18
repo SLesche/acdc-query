@@ -16,14 +16,10 @@ A database connection object.
 This function establishes a connection to an SQLite database file located at the specified path using the DBI and RSQLite packages.
 }
 \examples{
-# Connect to a SQLite database file in memory
-conn <- connect_to_db(":memory:")
-
 # When connecting to a specific file, like the downloaded ACDC-Database
 # just use the path to the database
+# If the specified database file does not exist, an error will be thrown.
+# Consider downloading the database using `download_acdc()` or `download_ted()`.
 \dontrun{conn <- connect_to_db("path/to/database.db")}
-
-# Want the most recent version of the database?
-# Download it at https://github.com/jstbcs/acdc-database/blob/main/acdc.db
 
 }

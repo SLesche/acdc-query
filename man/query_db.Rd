@@ -32,55 +32,15 @@ It extracts information about which tables of the database are relevant for the 
 The function constructs an SQL query which incorporates both the joining and filtering target variables. This SQL statement is then applied to the database and the resulting dataframe is returned to the user.
 }
 \examples{
-conn <- connect_to_db(":memory:")
+\dontrun{
+conn <- connect_to_db("path/to/database.db")
 
-mtcars$mtcars_id = 1:nrow(mtcars)
+arguments <- add_argument(list(), "publication_id", "greater", 0)
 
-example_data = data.frame(
-  example_id = 1:150,
-  mtcars_id = rep(1:30, each = 5),
-  example_value = runif(150, 0, 1)
-)
+target_vars <- c("default", "n_participants")
 
-DBI::dbWriteTable(conn, "mtcars_table", mtcars)
-DBI::dbWriteTable(conn, "example_table", example_data)
+target_table <- "study_table"
 
-# Initializing argument list
-arguments = list()
-arguments = add_argument(
- list = arguments,
- conn = conn,
- variable = "cyl",
- operator = "equal",
- values = c(4, 6)
-)
-
-arguments = add_argument(
- list = arguments,
- conn = conn,
- variable = "example_value",
- operator = "greater",
- values = 0.4
-)
-
-# Return specified variables
-target_vars = c("mtcars_id", "example_id", "cyl")
-
-query_results = query_db(
- conn = conn,
- arguments = arguments,
- target_vars = target_vars,
- target_table = "example_table",
- argument_relation = "and"
-)
-
-# Return all variables in mtcars_table and example_value from example_table
-query_results = query_db(
- conn = conn,
- arguments = arguments,
- target_vars = c("default", "example_value"),
- target_table = "mtcars_table",
- argument_relation = "and"
-)
-
+results <- query_db(conn, arguments, target_vars, target_table)
+}
 }

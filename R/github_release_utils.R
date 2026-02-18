@@ -11,7 +11,7 @@
 #' @param algo Hash algorithm (default: `"sha256"`).
 #'
 #' @return Invisibly returns the path to the hash file.
-#'
+#' @import httr
 #' @examples
 #' \dontrun{
 #' create_sqlite_hash_file("database.sqlite")
@@ -47,6 +47,7 @@ create_sqlite_hash_file <- function(sqlite_path,
 #' @param dest_dir Local directory where the file should be saved.
 #' @param tag Optional release tag (e.g., `"v1.2.0"`).
 #'   If NULL, the latest release is used.
+#' @param algo Hash algorithm (default: `"sha256"`).
 #' @param token Optional GitHub token. Defaults to `Sys.getenv("GITHUB_PAT")`.
 #' @param overwrite Whether to overwrite existing file (default: TRUE).
 #'
@@ -66,19 +67,20 @@ download_sqlite_release <- function(owner,
                                     asset_name,
                                     dest_dir,
                                     tag = NULL,
+                                    algo = "sha256",
                                     token = Sys.getenv("GITHUB_PAT"),
                                     overwrite = TRUE) {
 
   release <- get_github_release(owner, repo, tag, token)
-  
+
   hash_asset_name <- paste0(asset_name, ".", algo)
-  
+
   if (length(release$assets) == 0){
     stop("No assests found in release")
   }
-  
+
   asset <- release$assets[release$assets$name == hash_asset_name, ]
-  
+
   if (nrow(asset) == 0) {
     stop(
       paste(
@@ -125,6 +127,8 @@ download_sqlite_release <- function(owner,
 #' @param algo Hash algorithm (default: `"sha256"`).
 #'
 #' @return TRUE if hashes match, FALSE otherwise.
+#' @import digest
+#' @import httr
 #'
 #' @examples
 #' \dontrun{
@@ -142,21 +146,21 @@ compare_sqlite_to_release <- function(owner,
                                       tag = NULL,
                                       token = Sys.getenv("GITHUB_PAT"),
                                       algo = "sha256") {
-  
+
   if (!file.exists(local_sqlite_path)) {
     stop("Local SQLite file does not exist.", call. = FALSE)
   }
-  
+
   release <- get_github_release(owner, repo, tag, token)
-  
+
   hash_asset_name <- paste0(asset_name, ".", algo)
-  
+
   if (length(release$assets) == 0){
     stop("No assests found in release")
   }
-  
+
   asset <- release$assets[release$assets$name == hash_asset_name, ]
-  
+
   if (nrow(asset) == 0) {
     stop(
       paste(
@@ -166,38 +170,38 @@ compare_sqlite_to_release <- function(owner,
       call. = FALSE
     )
   }
-  
+
   tmp <- tempfile()
-  
+
   resp <- httr::GET(
     asset$browser_download_url,
     httr::write_disk(tmp, overwrite = TRUE)
   )
-  
+
   if (httr::status_code(resp) != 200) {
     stop("Failed to download hash file.", call. = FALSE)
   }
-  
+
   remote_hash <- trimws(readLines(tmp, warn = FALSE))
   unlink(tmp)
-  
+
   local_hash <- digest::digest(file = local_sqlite_path, algo = algo)
-  
+
   identical(local_hash, remote_hash)
 }
 
 
 # Internal helper (not exported)
 get_github_release <- function(owner, repo, tag = NULL, token = NULL) {
-  
+
   base_url <- sprintf("https://api.github.com/repos/%s/%s/releases", owner, repo)
-  
+
   final_url <- if (is.null(tag)) {
     paste0(base_url, "/latest")
   } else {
     paste0(base_url, "/tags/", tag)
   }
-  
+
   req <- if (!is.null(token) && nzchar(token)) {
     httr::GET(
       final_url,
@@ -206,14 +210,14 @@ get_github_release <- function(owner, repo, tag = NULL, token = NULL) {
   } else {
     httr::GET(final_url)
   }
-  
+
   if (httr::status_code(req) != 200) {
     stop(
       sprintf("GitHub API request failed [%s].", httr::status_code(req)),
       call. = FALSE
     )
   }
-  
+
   jsonlite::fromJSON(httr::content(req, as = "text", encoding = "UTF-8"))
 }
 
