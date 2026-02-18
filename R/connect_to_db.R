@@ -14,13 +14,14 @@
 #' # When connecting to a specific file, like the downloaded ACDC-Database
 #' # just use the path to the database
 #' \dontrun{conn <- connect_to_db("path/to/database.db")}
-#'
-#' # Want the most recent version of the database?
-#' # Download it at https://github.com/jstbcs/acdc-database/blob/main/acdc.db
+#'' @note If the specified database file does not exist, an error will be thrown. Consider downloading the database using `download_acdc()` or `download_ted()` if you haven't already.
 #'
 #' @import DBI
 #' @import RSQLite
 connect_to_db <- function(path_to_db){
+  if (!file.exists(path_to_db)) {
+    stop("Database file does not exist at the specified path. Consider downloading the database using download_acdc() or download_ted().", call. = FALSE)
+  }
   conn = DBI::dbConnect(RSQLite::SQLite(), path_to_db)
   return(conn)
 }

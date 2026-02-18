@@ -73,6 +73,10 @@ query_db <- function(conn, arguments, target_vars = "default", target_table = "o
   # Get info about the db structure
   col_names = get_column_names(conn)
 
+  if (!(target_table %in% col_names$table)){
+    stop(paste("Target table", target_table, "not found in database. Available tables:", paste(unique(col_names$table), collapse = ", ")))
+  }
+
   # replace "default" in target_vars with all variables of the target table
   target_table_vars = col_names[col_names$table == target_table, "column"]
 
