@@ -133,61 +133,72 @@ compare_sqlite_to_release <- function(owner,
                                       tag = NULL,
                                       token = Sys.getenv("GITHUB_PAT"),
                                       algo = "sha256") {
-
+  
   if (!file.exists(local_sqlite_path)) {
     stop("Local SQLite file does not exist.", call. = FALSE)
   }
-
+  
   release <- get_github_release(owner, repo, tag, token)
-
+  
   hash_asset_name <- paste0(asset_name, ".", algo)
-
-  asset <- release$assets[release$assets$name == hash_asset_name, ]
-
-  if (nrow(asset) == 0) {
-    stop("Hash asset not found in release.", call. = FALSE)
+  
+  if (length(release$assets) == 0){
+    stop("No assests found in release")
   }
-
+  
+  asset <- release$assets[release$assets$name == hash_asset_name, ]
+  
+  if (nrow(asset) == 0) {
+    stop(
+      paste(
+        "Hash asset", asset_name, "not found in release.",
+        "\nAvailable assets:", paste(release$assets$name, collapse = "; ")
+        ),
+      call. = FALSE
+    )
+  }
+  
   tmp <- tempfile()
-
+  
   resp <- httr::GET(
     asset$browser_download_url,
     httr::write_disk(tmp, overwrite = TRUE)
   )
-
+  
   if (httr::status_code(resp) != 200) {
     stop("Failed to download hash file.", call. = FALSE)
   }
-
+  
   remote_hash <- trimws(readLines(tmp, warn = FALSE))
   unlink(tmp)
-
+  
   local_hash <- digest::digest(file = local_sqlite_path, algo = algo)
-
+  
   identical(local_hash, remote_hash)
 }
 
 
 # Internal helper (not exported)
 get_github_release <- function(owner, repo, tag = NULL, token = NULL) {
-
+  
   base_url <- sprintf("https://api.github.com/repos/%s/%s/releases", owner, repo)
-
-  url <- if (is.null(tag)) {
+  
+  final_url <- if (is.null(tag)) {
     paste0(base_url, "/latest")
   } else {
     paste0(base_url, "/tags/", tag)
   }
-
+  
   headers <- if (!is.null(token) && nzchar(token)) {
     httr::add_headers(Authorization = paste("token", token))
   }
-
-  res <- httr::GET(url, headers)
-
+  
+  res <- httr::GET(final_url, headers)
+  
   if (httr::status_code(res) != 200) {
     stop("Failed to retrieve release information.", call. = FALSE)
   }
-
+  
   jsonlite::fromJSON(httr::content(res, as = "text", encoding = "UTF-8"))
 }
+
