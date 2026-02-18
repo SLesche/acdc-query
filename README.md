@@ -1,11 +1,12 @@
 # acdcquery: Query the Attentional Control Data Collection or the Truth Effect Database
-Interact with the Attentional Control Data Collection (ACDC) or the Truth Effect Database (TED). Connect to the database using `connect_to_db()`, build query statements using `add_argument()` and query the database using `query_db()`.
+Interact with the Attentional Control Data Collection (ACDC) or the Truth Effect Database (TED). Download the respective database using `download_acdc()` or `download_ted()`, connect to the database using `connect_to_db()`, build query statements using `add_argument()` and query the database using `query_db()`.
 
 ## Use
-You can download the latest version of ACDC from its [parent repo](https://github.com/jstbcs/acdc-database/tree/main).
-The latest version of TED can be found [here](https://github.com/SLesche/truth-effect-database).
+You can download the latest version of ACDC or TED using `download_acdc(filepath)` or `download_ted(filepath)`, respectively.
 
-To query the database, specify the connection to the database (obtained via `conn <- connect_to_db("path/to/db.db")`), a list of filter arguments (obtained by using `add_argument()`), and a vector containing the names of the variables you want returned.
+Alternatively, you can check whether your version is up-to-date using `check_acdc(filepath)` or `check_ted(filepath)` and update them using `update_acdc(filepath)` and `update_ted()`.
+
+Once you have the most recent version, you can query the databases. First, specify the connection to the database (obtained via `conn <- connect_to_db("path/to/db.db")`), a list of filter arguments (obtained by using `add_argument()`), and a vector containing the names of the variables you want returned.
 
 ## Working example
 ```
@@ -15,6 +16,9 @@ To query the database, specify the connection to the database (obtained via `con
 library(acdcquery)
 # download the latest version of the database and connect to that
 db_file <- "path/to/db"
+download_acdc(db_file)
+# or update_acdc(db_file) if it already exists
+
 conn <- connect_to_db(db_file)
 
 arguments <- list() 
