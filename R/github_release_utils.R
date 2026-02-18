@@ -72,11 +72,23 @@ download_sqlite_release <- function(owner,
                                     overwrite = TRUE) {
 
   release <- get_github_release(owner, repo, tag, token)
-
-  asset <- release$assets[release$assets$name == asset_name, ]
-
+  
+  hash_asset_name <- paste0(asset_name, ".", algo)
+  
+  if (length(release$assets) == 0){
+    stop("No assests found in release")
+  }
+  
+  asset <- release$assets[release$assets$name == hash_asset_name, ]
+  
   if (nrow(asset) == 0) {
-    stop("SQLite asset not found in release.", call. = FALSE)
+    stop(
+      paste(
+        "Hash asset", asset_name, "not found in release.",
+        "\nAvailable assets:", paste(release$assets$name, collapse = "; ")
+        ),
+      call. = FALSE
+    )
   }
 
   if (!dir.exists(dest_dir)) {
