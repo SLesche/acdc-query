@@ -1,4 +1,6 @@
-# acdcquery (development version)
+# acdcquery 1.2.2
+
+* Fixed issues with directory paths
 
 # acdcquery 1.2.1
 
