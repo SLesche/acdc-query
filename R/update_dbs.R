@@ -47,7 +47,7 @@ update_database <- function(
         owner = owner,
         repo = repo,
         asset_name = asset_name,
-        dest_dir = local_sqlite_path,
+        dest_dir = dirname(local_sqlite_path),
         tag = tag,
         token = token
       )

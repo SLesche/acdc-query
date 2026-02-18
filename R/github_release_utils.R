@@ -79,7 +79,7 @@ download_sqlite_release <- function(owner,
     stop("No assests found in release")
   }
 
-  asset <- release$assets[release$assets$name == hash_asset_name, ]
+  asset <- release$assets[release$assets$name == asset_name, ]
 
   if (nrow(asset) == 0) {
     stop(
@@ -159,9 +159,9 @@ compare_sqlite_to_release <- function(owner,
     stop("No assests found in release")
   }
 
-  asset <- release$assets[release$assets$name == hash_asset_name, ]
+  hash_asset <- release$assets[release$assets$name == hash_asset_name, ]
 
-  if (nrow(asset) == 0) {
+  if (nrow(hash_asset) == 0) {
     stop(
       paste(
         "Hash asset", asset_name, "not found in release.",
@@ -174,7 +174,7 @@ compare_sqlite_to_release <- function(owner,
   tmp <- tempfile()
 
   resp <- httr::GET(
-    asset$browser_download_url,
+    hash_asset$browser_download_url,
     httr::write_disk(tmp, overwrite = TRUE)
   )
 
