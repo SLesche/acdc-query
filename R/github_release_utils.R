@@ -11,7 +11,6 @@
 #' @param algo Hash algorithm (default: `"sha256"`).
 #'
 #' @return Invisibly returns the path to the hash file.
-#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -52,7 +51,6 @@ create_sqlite_hash_file <- function(sqlite_path,
 #' @param overwrite Whether to overwrite existing file (default: TRUE).
 #'
 #' @return Invisibly returns the full path to the downloaded file.
-#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -127,7 +125,6 @@ download_sqlite_release <- function(owner,
 #' @param algo Hash algorithm (default: `"sha256"`).
 #'
 #' @return TRUE if hashes match, FALSE otherwise.
-#' @export
 #'
 #' @examples
 #' \dontrun{
@@ -201,16 +198,22 @@ get_github_release <- function(owner, repo, tag = NULL, token = NULL) {
     paste0(base_url, "/tags/", tag)
   }
   
-  headers <- if (!is.null(token) && nzchar(token)) {
-    httr::add_headers(Authorization = paste("token", token))
+  req <- if (!is.null(token) && nzchar(token)) {
+    httr::GET(
+      final_url,
+      httr::add_headers(Authorization = paste("token", token))
+    )
+  } else {
+    httr::GET(final_url)
   }
   
-  res <- httr::GET(final_url, headers)
-  
-  if (httr::status_code(res) != 200) {
-    stop("Failed to retrieve release information.", call. = FALSE)
+  if (httr::status_code(req) != 200) {
+    stop(
+      sprintf("GitHub API request failed [%s].", httr::status_code(req)),
+      call. = FALSE
+    )
   }
   
-  jsonlite::fromJSON(httr::content(res, as = "text", encoding = "UTF-8"))
+  jsonlite::fromJSON(httr::content(req, as = "text", encoding = "UTF-8"))
 }
 
