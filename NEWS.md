@@ -1,5 +1,10 @@
 # acdcquery (development version)
 
+# acdcquery 1.2.1
+
+* Provided new functions to download recent versions of the supported databases and check whether a file is up-to-date. 
+* Improved error handling when specifying wrong file names or non-existent table names
+
 # acdcquery 1.1.1
 
 * Fixed issues with variables present in filter but not requested
