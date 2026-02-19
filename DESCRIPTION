@@ -1,6 +1,6 @@
 Package: acdcquery
 Title: Query the Attentional Control Data Collection or the Truth Effect Database
-Version: 1.2.2
+Version: 1.2.3
 Authors@R: c(
     person(given = "Sven", family = "Lesche", email = "sven.lesche@psychologie.uni-heidelberg.de", role = c("aut", "cre", "cph")),
     person(given = "Julia M.", family = "Haaf", email = "j.m.haaf@uva.nl", role = c("ctb", "ths")),
