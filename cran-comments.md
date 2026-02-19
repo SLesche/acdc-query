@@ -1,5 +1,5 @@
 ## Patch
-This is a patch to fix issues in file path specification.
+This is a patch to fix a typo in function definitions.
 
 ## R CMD check results
 
