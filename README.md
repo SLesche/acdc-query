@@ -16,9 +16,10 @@ Once you have the most recent version, you can query the databases. First, speci
 library(acdcquery)
 # download the latest version of the database and connect to that
 db_dir <- "path/to/db/"
-download_acdc(db_file)
-# or update_acdc(paste0(db_dir, "ted.db")) if it already exists
+download_acdc(db_dir)
 
+db_file <- paste0(db_dir, "ted.db")
+# or update_acdc(db_file) if it already exists
 conn <- connect_to_db(db_file)
 
 arguments <- list() 
