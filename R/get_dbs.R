@@ -17,7 +17,7 @@
 download_ted <- function(dest_dir,
                     tag = NULL,
                     token = Sys.getenv("GITHUB_PAT")) {
-  
+
   download_sqlite_release(
     owner = "SLesche",
     repo = "truth-effect-database",
@@ -45,10 +45,10 @@ download_ted <- function(dest_dir,
 #' \dontrun{
 #' download_acdc(tempdir())
 #' }
-dowload_acdc <- function(dest_dir,
+download_acdc <- function(dest_dir,
                      tag = NULL,
                      token = Sys.getenv("GITHUB_PAT")) {
-  
+
   download_sqlite_release(
     owner = "jstbcs",
     repo = "acdc-database",
