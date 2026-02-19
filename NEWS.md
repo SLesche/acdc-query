@@ -1,5 +1,7 @@
 # acdcquery 1.2.3
 
+* Fixed spelling issue "dowload_acdc()" -> "download_acdc()"
+
 # acdcquery 1.2.2
 
 * Fixed issues with directory paths
