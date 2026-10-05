@@ -8,7 +8,7 @@
 #' @return NULL (no explicit return value).
 
 check_operator <- function(operator, values) {
-  valid_operators = c("less", "greater", "between", "equal")
+  valid_operators = c("less", "greater", "between", "equal", "notequal")
 
   if (!operator %in% valid_operators) {
     msg = paste0("Operator can only take the following values: ", paste(valid_operators, collapse = ", "))
@@ -20,8 +20,8 @@ check_operator <- function(operator, values) {
     stop(msg)
   }
 
-  if (operator != "between" & operator != "equal" & length(values) != 1) {
-    msg = "When using 'less', 'greater', or 'equal', provide only one value"
+  if ((operator %in% c("less", "greater")) & length(values) != 1) {
+    msg = "When using 'less', or 'greater', provide only one value"
     stop(msg)
   }
 }
