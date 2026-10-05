@@ -1,5 +1,5 @@
 ## Patch
-This is a patch to fix a typo in function definitions.
+This is a patch to add support for a new operator in querying.
 
 ## R CMD check results
 
