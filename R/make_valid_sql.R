@@ -80,6 +80,31 @@ make_valid_sql <- function(conn, variable, operator, values) {
     )
   }
 
+  if (operator == "notequal") {
+    equal_statement = ""
+    for (i in seq_along(values)) {
+      added_statement = paste(
+        variable,
+        "!=",
+        values[i]
+      )
+      if (i == 1) {
+        equal_statement = added_statement
+      } else {
+        equal_statement = paste(equal_statement, "AND", added_statement)
+      }
+    }
+    
+    sql_statement = paste(
+      "SELECT",
+      id_name,
+      "FROM",
+      table,
+      "WHERE",
+      equal_statement
+    )
+  }
+
   if (operator == "between") {
     sql_statement = paste(
       "SELECT",
