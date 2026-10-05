@@ -1,3 +1,7 @@
+# acdcquery 1.2.4
+
+* Added support for "notequal" operator in query
+
 # acdcquery 1.2.3
 
 * Fixed spelling issue "dowload_acdc()" -> "download_acdc()"
